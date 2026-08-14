@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Check if user is admin
+    function isAdmin() {
+      return request.auth != null && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+    
+    // Check if user has active sub or trial is valid
+    function hasAccess() {
+      let userData = get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+      return userData.subscriptionActive == true || 
+             request.time < timestamp(userData.trialEnd);
+    }
+    
+    match /users/{uid} {
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow create: if request.auth != null && request.auth.uid == uid;
+      
+      // HACK PREVENTED: Users cannot update their own role, trialEnd, or premium status.
+      allow update: if request.auth != null && (
+        (request.auth.uid == uid && 
+         !request.resource.data.diff(resource.data).affectedKeys()
+         .hasAny(['role', 'subscriptionActive', 'trialEnd', 'isPremium'])) 
+        || isAdmin()
+      );
+      
+      allow delete: if isAdmin();
+    }
+    
+    match /tracks/{trackId} {
+      allow read: if request.auth != null && hasAccess();
+      allow write: if isAdmin();
+    }
+    
+    match /favorites/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+    
+    match /playlists/{playlistId} {
+      // BUG FIXED: Separated create/update (checks incoming data) from read/delete (checks existing data)
+      allow create, update: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    
+    match /payments/{paymentId} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
