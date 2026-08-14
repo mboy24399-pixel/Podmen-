@@ -317,16 +317,9 @@
     </div>
 
     <!-- TERA ORIGINAL FIREBASE JS SCRIPT (Bas Admin functions hataye hain) -->
-    <script>
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY", authDomain: "YOUR_PROJECT.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID", storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID", appId: "YOUR_APP_ID"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth(); const db = firebase.firestore();
-        
-        const PAYMENT_LINKS = { monthly: "YOUR_RAZORPAY_MONTHLY_LINK", yearly: "YOUR_RAZORPAY_YEARLY_LINK" };
+    <script src="firebase-config.js"></script>
+<script>
+
 
         let currentUser = null, userData = null, tracks = [], currentTrack = null, currentTrackIndex = -1;
         let isPlaying = false, isShuffled = false, repeatMode = 'off', currentPlaylist = null, playlists = [], favorites = [];
