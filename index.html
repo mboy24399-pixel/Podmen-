@@ -9,9 +9,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <style>
-        /* === NEUMORPHIC THEME VARIABLES === */
+        /* === NEUMORPHIC THEME VARIABLES (UNCHANGED) === */
         :root {
-            /* DARK THEME (Default - Match Image) */
+            /* DARK THEME */
             --bg: #222327;
             --surface: #222327;
             --text: #a4a5a8;
@@ -40,9 +40,7 @@
         .hidden { display: none !important; }
 
         /* === NEUMORPHIC SHADOW CLASSES === */
-        /* Ubhra hua (Outset) */
         .neu-out { background: var(--surface); box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light); border-radius: 20px; }
-        /* Dhasa hua (Inset) */
         .neu-in { background: var(--surface); box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); border-radius: 20px; }
         
         .neu-btn { background: var(--surface); box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light); border: none; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s ease; border-radius: 50%; }
@@ -69,12 +67,12 @@
         .header h2 { color: var(--text-active); font-size: 28px; font-weight: 700; }
         .badge { padding: 8px 16px; font-size: 12px; font-weight: 700; color: var(--accent); border-radius: 20px; }
 
-        /* Track List (Like the Image) */
+        /* Track List & Settings Rows */
         .track-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 100px; }
         .track-row { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
         .track-row:hover { box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light); }
-        /* Active Track State */
         .track-row.active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); }
+        
         .track-info { display: flex; align-items: center; gap: 15px; }
         .track-info img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; box-shadow: 3px 3px 6px var(--shadow-dark); }
         .track-title { font-size: 15px; font-weight: 700; color: var(--text-active); margin-bottom: 4px; }
@@ -82,11 +80,13 @@
         .play-indicator { width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text); box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light); }
         .track-row.active .play-indicator { background: var(--accent); color: white; box-shadow: 0 0 10px var(--accent-glow); }
 
-        /* Settings & Policy Pages */
-        .settings-card { padding: 30px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .policy-content { padding: 30px; line-height: 1.8; font-size: 14px; }
+        /* Settings Dashboard Specifics */
+        .settings-section-title { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; color: var(--text2); margin: 25px 0 15px 10px; text-transform: uppercase; }
+        .settings-icon { font-size: 18px; width: 30px; }
+        .settings-label { font-size: 14px; font-weight: 600; color: var(--text-active); }
+        .settings-arrow { color: var(--text2); font-weight: bold; font-size: 16px; }
 
-        /* Right Panel: The Player (Like the Image) */
+        /* Right Panel: The Player */
         #playerPanel { width: 340px; height: 100vh; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; z-index: 100; border-left: 1px solid rgba(255,255,255,0.02); }
         
         .art-container { width: 220px; height: 220px; border-radius: 50%; padding: 10px; margin-bottom: 30px; margin-top: 20px; display: flex; align-items: center; justify-content: center; }
@@ -100,7 +100,7 @@
         /* Seekbar */
         .seek-container { width: 100%; display: flex; align-items: center; gap: 10px; margin-bottom: 40px; }
         .time { font-size: 11px; font-weight: 600; width: 35px; text-align: center; }
-        .slider { flex: 1; -webkit-appearance: none; height: 6px; border-radius: 10px; outline: none; }
+        .slider { flex: 1; -webkit-appearance: none; height: 6px; border-radius: 10px; outline: none; background: var(--surface); box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light); }
         .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); cursor: pointer; }
 
         /* Controls */
@@ -108,10 +108,10 @@
         .ctrl-btn { width: 50px; height: 50px; font-size: 16px; }
         .play-btn { width: 65px; height: 65px; font-size: 22px; }
         
-        /* Utility */
+        /* Toggle Switch */
         .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; border-radius: 34px; transition: .4s; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; border-radius: 34px; transition: .4s; background: var(--surface); box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); }
         .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: var(--text); transition: .4s; border-radius: 50%; }
         input:checked + .toggle-slider:before { transform: translateX(24px); background-color: var(--accent); }
 
@@ -147,10 +147,9 @@
         <button class="nav-item active" onclick="nav('home')">🏠 Home</button>
         <button class="nav-item" onclick="nav('explore')">🔍 Explore</button>
         <button class="nav-item" onclick="nav('playlists')">📂 Playlists</button>
-        <button class="nav-item" onclick="nav('settings')">⚙️ Settings</button>
-        <button class="nav-item" onclick="nav('policy')">📜 Policy & Help</button>
+        <button class="nav-item" onclick="nav('favorites')">❤️ Favorites</button>
         <div style="flex:1;"></div>
-        <button class="nav-item" onclick="logout()">🚪 Logout</button>
+        <button class="nav-item" onclick="nav('settings')">⚙️ Settings</button>
     </nav>
 
     <!-- CENTER CONTENT -->
@@ -163,13 +162,14 @@
             <div id="trialBadge" class="badge neu-in">Checking...</div>
         </div>
 
-        <!-- Pages -->
+        <!-- Home Page (List View) -->
         <div id="homePage" class="page">
             <div id="trackList" class="track-list">
                 <!-- Tracks render here dynamically -->
             </div>
         </div>
 
+        <!-- Explore Page -->
         <div id="explorePage" class="page hidden">
             <input type="text" id="searchInput" class="neu-in" placeholder="Search any track..." style="width:100%; padding:15px; border:none; outline:none; border-radius:20px; color:var(--text-active); margin-bottom:20px;" oninput="searchTracks(this.value)">
             <div id="searchResults" class="track-list"></div>
@@ -180,30 +180,76 @@
             <p style="margin-top:10px; font-size:13px;">Available in next update.</p>
         </div>
 
+        <div id="favoritesPage" class="page hidden">
+            <h3 style="color:var(--text-active);">Liked Songs</h3>
+            <p style="margin-top:10px; font-size:13px;">Your favorite tracks will appear here.</p>
+        </div>
+
+        <!-- SETTINGS DASHBOARD (Unified & Image-Matched) -->
         <div id="settingsPage" class="page hidden">
-            <div class="settings-card neu-out">
+            
+            <!-- User Profile Card -->
+            <div class="neu-out" style="padding: 25px; display: flex; justify-content: space-between; align-items: center; border-radius: 20px; margin-bottom: 10px;">
                 <div>
-                    <h3 style="color:var(--text-active);">Light/Dark Theme</h3>
-                    <p style="font-size:12px; margin-top:5px;">Switch neumorphic UI mode</p>
+                    <h2 id="setUserName" style="color:var(--text-active); font-size:20px; margin-bottom:5px;">User Name</h2>
+                    <p id="setUserEmail" style="font-size:13px; color:var(--text); margin-bottom: 12px;">user@email.com</p>
+                    <span id="setUserStatus" style="font-size:11px; padding: 6px 12px; background:var(--accent); color:#fff; border-radius:12px; font-weight:bold; box-shadow: 0 0 10px var(--accent-glow);">Free Trial</span>
                 </div>
-                <label class="switch">
-                    <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
-                    <span class="toggle-slider neu-in"></span>
-                </label>
+                <img id="setUserAvatar" src="https://via.placeholder.com/60" style="width:65px; height:65px; border-radius:50%; box-shadow: 4px 4px 10px var(--shadow-dark);">
+            </div>
+
+            <!-- General Settings -->
+            <h4 class="settings-section-title">APP SETTINGS</h4>
+            <div class="track-list">
+                <div class="track-row neu-out" style="cursor:default;">
+                    <div style="display:flex; align-items:center;"><span class="settings-icon">🔔</span> <span class="settings-label">Notifications</span></div>
+                    <label class="switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+                </div>
+                <div class="track-row neu-out" style="cursor:default;">
+                    <div style="display:flex; align-items:center;"><span class="settings-icon">🌗</span> <span class="settings-label">Dark Mode</span></div>
+                    <label class="switch"><input type="checkbox" id="themeToggle" onchange="toggleTheme()"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="track-row neu-out" onclick="alert('Profile Editing available soon!')">
+                    <div style="display:flex; align-items:center;"><span class="settings-icon">👤</span> <span class="settings-label">Edit Profile</span></div>
+                    <span class="settings-arrow">›</span>
+                </div>
+            </div>
+
+            <!-- Terms & Support -->
+            <h4 class="settings-section-title">ABOUT & TERMS</h4>
+            <div class="track-list">
+                <div class="track-row neu-out" onclick="nav('policyDetails')">
+                    <div style="display:flex; align-items:center;"><span class="settings-icon">📄</span> <span class="settings-label">Privacy Policy</span></div>
+                    <span class="settings-arrow">›</span>
+                </div>
+                <div class="track-row neu-out" onclick="nav('policyDetails')">
+                    <div style="display:flex; align-items:center;"><span class="settings-icon">📜</span> <span class="settings-label">Terms and Conditions</span></div>
+                    <span class="settings-arrow">›</span>
+                </div>
+                <div class="track-row neu-out" onclick="alert('Support: support@musicstream.com\nWhatsApp Support Active.')">
+                    <div style="display:flex; align-items:center;"><span class="settings-icon">✉️</span> <span class="settings-label">Contact Support</span></div>
+                    <span class="settings-arrow">›</span>
+                </div>
+            </div>
+
+            <!-- Logout -->
+            <div class="track-list" style="margin-top: 15px;">
+                <div class="track-row neu-out" onclick="logout()" style="justify-content:center;">
+                    <span style="font-size:15px; font-weight:700; color:var(--accent);">🚪 Logout Account</span>
+                </div>
             </div>
         </div>
 
-        <div id="policyPage" class="page hidden">
-            <div class="policy-content neu-out">
+        <!-- Policy Details Internal Page -->
+        <div id="policyDetailsPage" class="page hidden">
+            <div class="neu-out" style="padding:30px; line-height:1.8; font-size:14px; border-radius:20px;">
                 <h3 style="color:var(--accent); margin-bottom:10px;">Terms & Conditions</h3>
-                <p style="margin-bottom:20px;">MusicStream provides premium audio streaming. Unauthorized extraction of archive links is strictly prohibited.</p>
-                <h3 style="color:var(--cyan); margin-bottom:10px;">Privacy Policy & Support</h3>
-                <p>Your WhatsApp number and email are used solely for account verification and premium support.</p>
-                <br>
-                <p><strong>Email:</strong> support@musicstream.com</p>
-                <p><strong>WhatsApp:</strong> User dashboard registered number.</p>
+                <p style="margin-bottom:20px; color:var(--text);">MusicStream provides premium audio streaming. Unauthorized extraction of archive links is strictly prohibited. Your 7-day trial requires email verification.</p>
+                <h3 style="color:var(--cyan); margin-bottom:10px;">Privacy Policy & Data</h3>
+                <p style="color:var(--text);">Your WhatsApp number and email are used solely for account verification and direct premium support. We do not sell your personal data.</p>
             </div>
         </div>
+
     </main>
 
     <!-- RIGHT PANEL (PLAYER) -->
@@ -235,8 +281,8 @@
             <button class="neu-btn ctrl-btn" onclick="playNext()">⏭</button>
         </div>
         
-        <div style="margin-top:30px; width:100%; display:flex; align-items:center; gap:10px;">
-            <span style="font-size:12px;">🔈</span>
+        <div style="margin-top:40px; width:100%; display:flex; align-items:center; gap:12px;">
+            <span style="font-size:14px;">🔈</span>
             <input type="range" class="slider neu-in" min="0" max="1" step="0.05" value="1" oninput="setVolume(this.value)">
         </div>
     </aside>
@@ -271,12 +317,24 @@
             if (user) {
                 currentUser = user;
                 document.getElementById('authScreen').classList.add('hidden');
+                
+                // Populate profile early
+                document.getElementById('setUserName').textContent = user.displayName || user.email.split('@')[0];
+                document.getElementById('setUserEmail').textContent = user.email;
+                if(user.photoURL) document.getElementById('setUserAvatar').src = user.photoURL;
+
                 const doc = await db.collection('users').doc(user.uid).get();
                 if (!doc.exists || !doc.data().phone) {
                     document.getElementById('onboardingScreen').classList.remove('hidden');
                 } else {
                     document.getElementById('onboardingScreen').classList.add('hidden');
-                    db.collection('users').doc(user.uid).onSnapshot(snap => { if(snap.exists) { userData = snap.data(); enforceAccess(); } });
+                    db.collection('users').doc(user.uid).onSnapshot(snap => { 
+                        if(snap.exists) { 
+                            userData = snap.data(); 
+                            document.getElementById('setUserStatus').textContent = userData.subscriptionActive ? 'Premium Member' : 'Free Trial';
+                            enforceAccess(); 
+                        } 
+                    });
                     loadCatalog();
                 }
             } else {
@@ -328,7 +386,7 @@
 
         function playTrack(idx) {
             if(!userData.subscriptionActive && new Date() > new Date(userData.trialEnd)) { document.getElementById('paywall').classList.remove('hidden'); return; }
-           currentTrackIdx = idx; const t = tracks[idx];
+            currentTrackIdx = idx; const t = tracks[idx];
             audio.src = t.audioUrl; audio.play();
             document.getElementById('playerTitle').textContent = t.title;
             document.getElementById('playerArtist').textContent = t.artist;
@@ -364,8 +422,15 @@
             document.querySelectorAll('.page, .nav-item').forEach(el => el.classList.remove('active', 'hidden'));
             document.querySelectorAll('.page').forEach(el => el.classList.add('hidden'));
             document.getElementById(pageId + 'Page').classList.remove('hidden');
-            document.querySelector(`[onclick="nav('${pageId}')"]`).classList.add('active');
-            document.getElementById('pageTitle').textContent = pageId.charAt(0).toUpperCase() + pageId.slice(1);
+            
+            // Mark active nav link if exists
+            const navLink = document.querySelector(`[onclick="nav('${pageId}')"]`);
+            if(navLink) navLink.classList.add('active');
+            
+            // Format Title
+            const rawTitle = pageId === 'policyDetails' ? 'Policy & Terms' : pageId;
+            document.getElementById('pageTitle').textContent = rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1);
+            
             if(historyStack[historyStack.length-1] !== pageId) historyStack.push(pageId);
         }
 
