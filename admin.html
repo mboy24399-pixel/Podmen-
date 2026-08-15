@@ -126,10 +126,12 @@
         document.getElementById('mainApp').classList.remove('hidden');
         loadAdminData();
     } else {
-        document.getElementById('authScreen').classList.add('hidden');
+        // YAHAN REMOVE AAYEGA TAAKI LOGIN SCREEN DIKHE!
+        document.getElementById('authScreen').classList.remove('hidden'); 
         document.getElementById('mainApp').classList.add('hidden');
     }
 });
+
 
 
         function googleSignIn() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err => alert(err.message)); }
