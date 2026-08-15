@@ -24,7 +24,7 @@
         .btn-success { background: var(--success); color: white; }
         .btn-small { padding: 5px 10px; font-size: 11px; border-radius: 12px; }
         
-        input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font-size: 14px; margin-bottom: 10px; }
+        input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font-size: 14px; margin-bottom: 10px; outline: none; }
         
         #authScreen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0a0a0f; display: flex; align-items: center; justify-content: center; z-index: 9999; }
         .auth-box { background: var(--surface); padding: 40px; border-radius: 20px; text-align: center; max-width: 400px; width: 90%; border: 1px solid var(--border); }
@@ -143,7 +143,7 @@
             document.getElementById('adminUsersList').innerHTML = usersSnapshot.docs.map(doc => {
                 const user = doc.data();
                 return `<div class="setting-item">
-                        <div><strong>${user.displayName || user.email}</strong><p style="font-size:11px; color:var(--text3);">${user.email}</p><p style="font-size:11px; color:${user.subscriptionActive ? 'var(--success)' : 'var(--text3)'};">${user.subscriptionActive ? 'Premium' : 'Free'}</p></div>
+                        <div><strong>${user.displayName || user.email}</strong><p style="font-size:11px; color:var(--text3);">${user.email}</p></div>
                         <div>
                             <button class="btn btn-success btn-small" onclick="activatePremium('${doc.id}')">Premium</button>
                             <button class="btn btn-danger btn-small" onclick="removePremium('${doc.id}')">Remove</button>
