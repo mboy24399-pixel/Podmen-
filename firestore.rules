@@ -24,7 +24,7 @@ service cloud.firestore {
         && request.resource.data.role == 'user' 
         && request.resource.data.subscriptionActive == false;
       allow update: if isSelf(uid)
-        && hasOnly(['displayName', 'photoURL', 'settings'])
+        && hasOnly(['displayName', 'photoURL', 'settings', 'phone', 'email'])
         && request.resource.data.uid == resource.data.uid
         && request.resource.data.role == resource.data.role
         && request.resource.data.subscriptionActive == resource.data.subscriptionActive
@@ -57,4 +57,3 @@ service cloud.firestore {
     }
   }
 }
-
