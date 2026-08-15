@@ -2,18 +2,14 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Users apne aur dusro ke basic data (jaise total users) dekh saken aur update kar saken
     match /users/{uid} {
       allow read, write: if request.auth != null;
     }
     
-    // Tracks (Gaane) sab padh saken, aur add bhi kar saken (Admin panel ke liye)
     match /tracks/{trackId} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null;
+      allow read, write: if request.auth != null;
     }
     
-    // Playlists aur Favorites sab access kar saken
     match /playlists/{playlistId} {
       allow read, write: if request.auth != null;
     }
