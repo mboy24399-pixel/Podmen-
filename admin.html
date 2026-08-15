@@ -190,10 +190,15 @@
         }
         
         async function removePremium(userId) {
-            if (!confirm('Remove premium access?')) return;
-            await db.collection('users').doc(userId).update({ subscriptionActive: false, subscriptionExpiry: null });
-            alert('Premium removed!'); loadAdminData();
-        }
+    if (!confirm('Remove premium access & trial?')) return;
+    await db.collection('users').doc(userId).update({ 
+        subscriptionActive: false, 
+        subscriptionExpiry: null,
+        trialEnd: '2024-01-01T00:00:00.000Z' 
+    });
+    alert('Premium and Trial removed!'); loadAdminData();
+}
+
     </script>
 </body>
 </html>
