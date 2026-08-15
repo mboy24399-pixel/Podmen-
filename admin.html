@@ -132,9 +132,9 @@
             document.getElementById('adminTracksList').innerHTML = tracksSnapshot.docs.map(doc => {
                 const track = doc.data();
                 return `<div class="setting-item">
-                        <div><strong>${track.title}</strong> — ${track.artist}</div>
+                        <div><strong>${track.title}</strong> — ${track.artist} ${track.isActive ? '✅' : '❌'}</div>
                         <div>
-                            <button class="btn btn-secondary btn-small" onclick="toggleTrack('${doc.id}', ${!track.isActive})">${track.isActive ? 'Hide' : 'Show'}</button>
+                            <button class="btn btn-secondary btn-small" onclick="toggleTrack('${doc.id}', ${!track.isActive})">Toggle</button>
                             <button class="btn btn-danger btn-small" onclick="deleteTrack('${doc.id}')">Delete</button>
                         </div>
                     </div>`;
@@ -143,7 +143,7 @@
             document.getElementById('adminUsersList').innerHTML = usersSnapshot.docs.map(doc => {
                 const user = doc.data();
                 return `<div class="setting-item">
-                        <div><strong>${user.displayName || user.email}</strong><p style="font-size:11px; color:var(--text3);">${user.email}</p></div>
+                        <div><strong>${user.displayName || user.email}</strong><p style="font-size:11px; color:var(--text3);">${user.email}</p><p style="font-size:11px; color:${user.subscriptionActive ? 'var(--success)' : 'var(--text3)'};">${user.subscriptionActive ? 'Premium' : 'Free'}</p></div>
                         <div>
                             <button class="btn btn-success btn-small" onclick="activatePremium('${doc.id}')">Premium</button>
                             <button class="btn btn-danger btn-small" onclick="removePremium('${doc.id}')">Remove</button>
@@ -159,7 +159,7 @@
             const audioUrl = document.getElementById('trackAudio').value;
             const genre = document.getElementById('trackGenre').value;
             
-            if (!title || !artist || !coverUrl || !audioUrl) return alert('Please fill all required fields');
+            if (!title || !artist || !coverUrl || !audioUrl) return alert('Please fill all fields');
             
             await db.collection('tracks').add({ 
                 title, artist, coverUrl, audioUrl, 
@@ -211,83 +211,6 @@
             alert('Premium and Trial removed!'); 
             loadAdminData();
         }
-    </script>
-</body>
-</html>
-    } else {
-        // YAHAN REMOVE AAYEGA TAAKI LOGIN SCREEN DIKHE!
-        document.getElementById('authScreen').classList.remove('hidden'); 
-        document.getElementById('mainApp').classList.add('hidden');
-    }
-});
-
-
-
-        function googleSignIn() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err => alert(err.message)); }
-        function logout() { auth.signOut(); location.reload(); }
-
-        // TERE ORIGINAL ADMIN FUNCTIONS
-        async function loadAdminData() {
-            const usersSnapshot = await db.collection('users').get();
-            const tracksSnapshot = await db.collection('tracks').get();
-            
-            document.getElementById('statUsers').textContent = usersSnapshot.size;
-            document.getElementById('statTracks').textContent = tracksSnapshot.size;
-            document.getElementById('statPremium').textContent = usersSnapshot.docs.filter(d => d.data().subscriptionActive).length;
-            
-            document.getElementById('adminTracksList').innerHTML = tracksSnapshot.docs.map(doc => {
-                const track = doc.data();
-                return `<div class="setting-item">
-                        <div><strong>${track.title}</strong> — ${track.artist} ${track.isActive ? '✅' : '❌'}</div>
-                        <div>
-                            <button class="btn btn-secondary btn-small" onclick="toggleTrack('${doc.id}', ${!track.isActive})">Toggle</button>
-                            <button class="btn btn-danger btn-small" onclick="deleteTrack('${doc.id}')">Delete</button>
-                        </div>
-                    </div>`;
-            }).join('');
-            
-            document.getElementById('adminUsersList').innerHTML = usersSnapshot.docs.map(doc => {
-                const user = doc.data();
-                return `<div class="setting-item">
-                        <div><strong>${user.displayName || user.email}</strong><p style="font-size:11px; color:var(--text3);">${user.email}</p><p style="font-size:11px; color:${user.subscriptionActive ? 'var(--success)' : 'var(--text3)'};">${user.subscriptionActive ? 'Premium' : 'Free'}</p></div>
-                        <div>
-                            <button class="btn btn-success btn-small" onclick="activatePremium('${doc.id}')">Premium</button>
-                            <button class="btn btn-danger btn-small" onclick="removePremium('${doc.id}')">Remove</button>
-                        </div>
-                    </div>`;
-            }).join('');
-        }
-        
-        async function addTrack() {
-            const title = document.getElementById('trackTitle').value, artist = document.getElementById('trackArtist').value;
-            const coverUrl = document.getElementById('trackCover').value, audioUrl = document.getElementById('trackAudio').value;
-            const genre = document.getElementById('trackGenre').value;
-            if (!title || !artist || !coverUrl || !audioUrl) return alert('Please fill all fields');
-            await db.collection('tracks').add({ title, artist, coverUrl, audioUrl, genre: genre || 'General', isActive: true, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-            alert('Track added successfully!');
-            document.getElementById('trackTitle').value = ''; document.getElementById('trackArtist').value = ''; document.getElementById('trackCover').value = ''; document.getElementById('trackAudio').value = ''; document.getElementById('trackGenre').value = '';
-            loadAdminData();
-        }
-        
-        async function toggleTrack(trackId, isActive) { await db.collection('tracks').doc(trackId).update({ isActive }); loadAdminData(); }
-        async function deleteTrack(trackId) { if (!confirm('Delete this track?')) return; await db.collection('tracks').doc(trackId).delete(); loadAdminData(); }
-        
-        async function activatePremium(userId) {
-            const months = prompt('Premium duration (months):', '1'); if (!months) return;
-            await db.collection('users').doc(userId).update({ subscriptionActive: true, subscriptionExpiry: new Date(Date.now() + parseInt(months) * 30 * 24 * 60 * 60 * 1000).toISOString(), subscriptionPlan: 'manual' });
-            alert('Premium activated!'); loadAdminData();
-        }
-        
-        async function removePremium(userId) {
-    if (!confirm('Remove premium access & trial?')) return;
-    await db.collection('users').doc(userId).update({ 
-        subscriptionActive: false, 
-        subscriptionExpiry: null,
-        trialEnd: '2024-01-01T00:00:00.000Z' 
-    });
-    alert('Premium and Trial removed!'); loadAdminData();
-}
-
     </script>
 </body>
 </html>
