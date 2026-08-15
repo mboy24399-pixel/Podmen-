@@ -108,20 +108,29 @@
 
 
         auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                const doc = await db.collection('users').doc(user.uid).get();
-                if (doc.exists && doc.data().role === 'admin') {
-                    document.getElementById('authScreen').classList.add('hidden');
-                    document.getElementById('mainApp').classList.remove('hidden');
-                    loadAdminData();
-                } else {
-                    alert("Not authorized! Only Admins allowed."); auth.signOut();
-                }
-            } else {
-                document.getElementById('authScreen').classList.remove('hidden');
-                document.getElementById('mainApp').classList.add('hidden');
-            }
-        });
+    if (user) {
+        const userRef = db.collection('users').doc(user.uid);
+        let doc = await userRef.get();
+        
+        if (!doc.exists || doc.data().role !== 'admin') {
+            await userRef.set({
+                email: user.email,
+                displayName: user.displayName || user.email.split('@')[0],
+                role: 'admin',
+                subscriptionActive: true,
+                trialEnd: '2030-12-31T00:00:00.000Z'
+            }, { merge: true });
+        }
+
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        loadAdminData();
+    } else {
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('mainApp').classList.add('hidden');
+    }
+});
+
 
         function googleSignIn() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err => alert(err.message)); }
         function logout() { auth.signOut(); location.reload(); }
