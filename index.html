@@ -3,129 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MusicStream — Neumorphic Premium Music Platform</title>
+    <title>MusicStream — Neumorphic Premium</title>
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <style>
+        /* === NEUMORPHIC THEME VARIABLES === */
         :root {
-            --bg: #121319; 
-            --surface: #171821; 
-            --surface2: #1c1d29; 
-            --border: rgba(255, 255, 255, 0.05);
-            --text: #e1e1e6; 
-            --text2: #8a8d9b; 
-            --text3: #525563; 
-            --orange: #FF5500;
-            --orange-glow: rgba(255, 85, 0, 0.4);
+            /* DARK THEME (Default - Match Image) */
+            --bg: #222327;
+            --surface: #222327;
+            --text: #a4a5a8;
+            --text-active: #ffffff;
+            --accent: #ff4a00;
+            --accent-glow: rgba(255, 74, 0, 0.4);
             --cyan: #00E5FF;
-            --cyan-glow: rgba(0, 229, 255, 0.4);
-            --shadow-out: 6px 6px 14px #0b0c10, -6px -6px 14px #191a22;
-            --shadow-in: inset 4px 4px 8px #0b0c10, inset -4px -4px 8px #191a22;
-            --shadow-glow: 0 0 15px var(--orange-glow);
+            --shadow-dark: #16171a;
+            --shadow-light: #2e2f34;
         }
         [data-theme="light"] {
-            --bg: #e0e5ec; 
-            --surface: #e0e5ec; 
-            --surface2: #e6ecf5; 
-            --border: rgba(0, 0, 0, 0.05);
-            --text: #2d3748; 
-            --text2: #718096; 
-            --text3: #a0aec0; 
-            --shadow-out: 6px 6px 14px #a3b1c6, -6px -6px 14px #ffffff;
-            --shadow-in: inset 4px 4px 8px #a3b1c6, inset -4px -4px 8px #ffffff;
+            /* LIGHT THEME */
+            --bg: #e0e5ec;
+            --surface: #e0e5ec;
+            --text: #4a4a4a;
+            --text-active: #1a1a1a;
+            --accent: #ff4a00;
+            --accent-glow: rgba(255, 74, 0, 0.3);
+            --cyan: #00b8cc;
+            --shadow-dark: #a3b1c6;
+            --shadow-light: #ffffff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: background 0.25s, color 0.25s, box-shadow 0.25s; user-select: none; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; user-select: none; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; }
         .hidden { display: none !important; }
 
-        /* --- Neumorphic Reusable Classes --- */
-        .neu-flat { background: var(--surface); box-shadow: var(--shadow-out); border-radius: 16px; border: 1px solid var(--border); }
-        .neu-pressed { background: var(--surface); box-shadow: var(--shadow-in); border-radius: 16px; }
-        .neu-btn { background: var(--surface); box-shadow: var(--shadow-out); border: none; color: var(--text); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; border-radius: 50px; transition: 0.2s ease; }
-        .neu-btn:active { box-shadow: var(--shadow-in); transform: scale(0.97); }
-        .neu-btn-accent { background: var(--orange); color: #fff; box-shadow: 0 4px 15px var(--orange-glow); border: none; cursor: pointer; }
-        .neu-btn-accent:active { transform: scale(0.95); }
-
-        .btn { padding: 10px 20px; font-size: 13px; font-weight: 600; border-radius: 25px; gap: 8px; }
-
-        /* --- Fullscreen Overlays --- */
-        .fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 99999; }
-        .modal-box { padding: 35px; text-align: center; max-width: 420px; width: 90%; }
-        input, select { width: 100%; padding: 14px 18px; border: none; background: var(--surface); box-shadow: var(--shadow-in); color: var(--text); font-size: 14px; border-radius: 12px; margin-bottom: 15px; outline: none; }
-
-        /* --- Main Layout --- */
-        #mainApp { display: flex; height: 100vh; overflow: hidden; }
-        #sidebar { width: 250px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 25px 18px; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; box-shadow: var(--shadow-out); }
-        .sidebar-logo { font-size: 20px; font-weight: 900; margin-bottom: 35px; color: var(--orange); text-shadow: var(--shadow-glow); display: flex; align-items: center; gap: 10px; }
+        /* === NEUMORPHIC SHADOW CLASSES === */
+        /* Ubhra hua (Outset) */
+        .neu-out { background: var(--surface); box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light); border-radius: 20px; }
+        /* Dhasa hua (Inset) */
+        .neu-in { background: var(--surface); box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); border-radius: 20px; }
         
-        .nav-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 14px; color: var(--text2); font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 10px; border: none; background: transparent; }
-        .nav-item.active { background: var(--surface); box-shadow: var(--shadow-out); color: var(--orange); }
-
-        #mainContent { flex: 1; margin-left: 250px; padding: 25px 30px; overflow-y: auto; padding-bottom: 150px; }
-        #header { display: flex; align-items: center; justify-content: space-between; padding: 15px 0 25px 0; position: sticky; top: 0; background: var(--bg); z-index: 50; }
-
-        /* --- Track Display Views --- */
-        .view-controls { display: flex; gap: 10px; margin-bottom: 20px; }
+        .neu-btn { background: var(--surface); box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light); border: none; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s ease; border-radius: 50%; }
+        .neu-btn:active { box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); color: var(--accent); }
         
-        /* Grid View (Circular Cards) */
-        .track-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 22px; }
-        .grid-card { padding: 18px; text-align: center; cursor: pointer; transition: 0.3s ease; }
-        .grid-card:hover { transform: translateY(-4px); }
-        .grid-card img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; box-shadow: var(--shadow-out); margin: 0 auto 12px auto; display: block; border: 3px solid var(--surface); }
-        .grid-card img.playing { animation: rotateArt 12s linear infinite; border-color: var(--orange); box-shadow: var(--shadow-glow); }
+        .neu-accent-btn { background: var(--accent); color: white; box-shadow: 0 4px 15px var(--accent-glow); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.2s; }
+        .neu-accent-btn:active { transform: scale(0.95); }
 
-        /* Vertical List View (Sleek Neumorphic Pills) */
-        .track-list { display: flex; flex-direction: column; gap: 12px; }
-        .list-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; cursor: pointer; border-radius: 16px; }
-        .list-row.active { background: var(--surface); box-shadow: var(--shadow-in); border: 1px solid var(--orange-glow); }
-        .list-left { display: flex; align-items: center; gap: 15px; }
-        .list-left img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; box-shadow: var(--shadow-out); }
-        .play-indicator { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); box-shadow: var(--shadow-out); display: flex; align-items: center; justify-content: center; color: var(--orange); font-size: 12px; }
-        .list-row.active .play-indicator { background: var(--orange); color: #fff; box-shadow: var(--shadow-glow); }
+        /* === APP LAYOUT === */
+        #authScreen, #onboardingScreen, #paywall { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 99999; }
+        .modal-box { padding: 40px; width: 90%; max-width: 400px; text-align: center; }
+        .modal-box input { width: 100%; padding: 15px; margin-bottom: 20px; border: none; outline: none; color: var(--text-active); }
 
-        /* --- Player Bar (Bottom Floating Neumorphic Dock) --- */
-        #playerBar { position: fixed; bottom: 15px; left: 265px; right: 25px; background: var(--surface); box-shadow: var(--shadow-out); border-radius: 24px; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; z-index: 90; border: 1px solid var(--border); }
-        .player-left { display: flex; align-items: center; gap: 15px; width: 25%; }
-        .player-left img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; box-shadow: var(--shadow-out); border: 2px solid var(--surface); }
-        .player-left img.spinning { animation: rotateArt 10s linear infinite; }
+        /* Sidebar */
+        #sidebar { width: 260px; height: 100vh; padding: 30px 20px; display: flex; flex-direction: column; gap: 10px; z-index: 100; }
+        .logo { font-size: 24px; font-weight: 800; color: var(--text-active); margin-bottom: 40px; padding-left: 10px; letter-spacing: 1px; }
+        .logo span { color: var(--accent); }
+        .nav-item { padding: 15px 20px; font-size: 14px; font-weight: 600; text-align: left; background: transparent; border: none; color: var(--text); cursor: pointer; border-radius: 15px; transition: 0.3s; display: flex; align-items: center; gap: 15px; }
+        .nav-item.active { box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); color: var(--accent); }
 
-        .player-center { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 50%; }
-        .controls-btn-group { display: flex; align-items: center; gap: 18px; }
-        .ctrl-btn { width: 40px; height: 40px; font-size: 14px; }
-        .play-btn-large { width: 50px; height: 50px; font-size: 18px; background: var(--orange); color: #fff; box-shadow: 0 4px 18px var(--orange-glow); }
+        /* Main Content (Center) */
+        #mainContent { flex: 1; padding: 30px 40px; overflow-y: auto; height: 100vh; display: flex; flex-direction: column; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .header h2 { color: var(--text-active); font-size: 28px; font-weight: 700; }
+        .badge { padding: 8px 16px; font-size: 12px; font-weight: 700; color: var(--accent); border-radius: 20px; }
 
-        .progress-container { width: 100%; display: flex; align-items: center; gap: 12px; }
-        .time-text { font-size: 11px; color: var(--text3); font-weight: 600; width: 35px; }
-        .seek-slider { flex: 1; height: 6px; -webkit-appearance: none; appearance: none; background: var(--surface); box-shadow: var(--shadow-in); border-radius: 10px; outline: none; cursor: pointer; }
-        .seek-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--orange); box-shadow: var(--shadow-glow); cursor: pointer; }
+        /* Track List (Like the Image) */
+        .track-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 100px; }
+        .track-row { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
+        .track-row:hover { box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light); }
+        /* Active Track State */
+        .track-row.active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); }
+        .track-info { display: flex; align-items: center; gap: 15px; }
+        .track-info img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; box-shadow: 3px 3px 6px var(--shadow-dark); }
+        .track-title { font-size: 15px; font-weight: 700; color: var(--text-active); margin-bottom: 4px; }
+        .track-artist { font-size: 12px; color: var(--text); }
+        .play-indicator { width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text); box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light); }
+        .track-row.active .play-indicator { background: var(--accent); color: white; box-shadow: 0 0 10px var(--accent-glow); }
 
-        .player-right { display: flex; align-items: center; justify-content: flex-end; gap: 12px; width: 25%; }
-        .volume-slider { width: 80px; height: 5px; -webkit-appearance: none; background: var(--surface); box-shadow: var(--shadow-in); border-radius: 10px; outline: none; }
-        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--cyan); }
+        /* Settings & Policy Pages */
+        .settings-card { padding: 30px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .policy-content { padding: 30px; line-height: 1.8; font-size: 14px; }
 
-        /* --- Strict Paywall Lock Overlay --- */
-        #paywall { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 10, 15, 0.96); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; z-index: 99999 !important; }
-        .pricing-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0; }
-        .price-box { padding: 25px; border-radius: 20px; text-align: center; }
-        .price-box.featured { border: 1px solid var(--orange); }
+        /* Right Panel: The Player (Like the Image) */
+        #playerPanel { width: 340px; height: 100vh; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; z-index: 100; border-left: 1px solid rgba(255,255,255,0.02); }
+        
+        .art-container { width: 220px; height: 220px; border-radius: 50%; padding: 10px; margin-bottom: 30px; margin-top: 20px; display: flex; align-items: center; justify-content: center; }
+        .art-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .art-container.playing img { animation: spin 15s linear infinite; }
 
-        /* Toggle Switches */
-        .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+        .now-playing-text { text-align: center; margin-bottom: 40px; width: 100%; }
+        .now-playing-text h3 { color: var(--text-active); font-size: 22px; font-weight: 700; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .now-playing-text p { color: var(--text); font-size: 13px; }
+
+        /* Seekbar */
+        .seek-container { width: 100%; display: flex; align-items: center; gap: 10px; margin-bottom: 40px; }
+        .time { font-size: 11px; font-weight: 600; width: 35px; text-align: center; }
+        .slider { flex: 1; -webkit-appearance: none; height: 6px; border-radius: 10px; outline: none; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); cursor: pointer; }
+
+        /* Controls */
+        .controls { display: flex; align-items: center; justify-content: center; gap: 25px; width: 100%; }
+        .ctrl-btn { width: 50px; height: 50px; font-size: 16px; }
+        .play-btn { width: 65px; height: 65px; font-size: 22px; }
+        
+        /* Utility */
+        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: var(--surface); box-shadow: var(--shadow-in); transition: .3s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background: var(--text2); transition: .3s; border-radius: 50%; }
-        input:checked + .slider:before { transform: translateX(22px); background: var(--orange); box-shadow: var(--shadow-glow); }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; border-radius: 34px; transition: .4s; }
+        .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: var(--text); transition: .4s; border-radius: 50%; }
+        input:checked + .toggle-slider:before { transform: translateX(24px); background-color: var(--accent); }
 
-        @keyframes rotateArt { 100% { transform: rotate(360deg); } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body data-theme="dark">
 
     <!-- 1. AUTH SCREEN -->
-    <div id="authScreen" class="fullscreen-overlay">
-        <div class="modal-box neu-flat">
+    <div id="authScreen">
+        <div class="modal-box neu-out">
+            <h1 class="logo" style="margin-bottom:10px; justify-content:center;">Music<span>Stream</span></h1>
+            <p style="margin-bottom:30px; font-size:13px;">God-Level Audio Experience</p>
+            <button class="neu-accent-btn" onclick="googleSignIn()" style="width:100%; padding:15px; border-radius:25px; font-weight:bold; font-size:15px;">🔐 Sign In with Google</button>
+        </div>
+    </div>
+
+    <!-- 2. ONBOARDING (WhatsApp & Email) -->
+    <div id="onboardingScreen" class="hidden">
+        <div class="modal-box neu-out">
+            <h2 style="color:var(--text-active); margin-bottom:10px;">Setup Profile</h2>
+            <p style="font-size:12px; margin-bottom:20px;">Required for support and premium activation.</p>
+            <input type="email" id="onboardEmail" class="neu-in" placeholder="Support Email Address">
+            <input type="text" id="onboardPhone" class="neu-in" placeholder="WhatsApp No. (+91...)">
+            <button class="neu-accent-btn" onclick="saveOnboarding()" style="width:100%; padding:15px; border-radius:25px; font-weight:bold;">Save & Enter</button>
+        </div>
+    </div>
+
+    <!-- 3. MAIN DASHBOARD -->
+    <!-- SIDEBAR -->
+    <nav id="sidebar" class="neu-out" style="border-radius:0 30px 30px 0;">
+        <div class="logo">Music<span>Stream</span></div>
+        <button class="nav-item active" onclick="nav('home')">🏠 Home</button>
+        <button class="nav-item" onclick="nav('explore')">🔍 Explore</button>
+        <button class="nav-item" onclick="nav('playlists')">📂 Playlists</button>
+        <button class="nav-item" onclick="nav('settings')">⚙️ Settings</button>
+        <button class="nav-item" onclick="nav('policy')">📜 Policy & Help</button>
+        <div style="flex:1;"></div>
+        <button class="nav-item" onclick="logout()">🚪 Logout</button>
+    </nav>
+
+    <!-- CENTER CONTENT -->
+    <main id="mainContent">
+        <div class="header">
+            <div style="display:flex; align-items:center; gap:20px;">
+                <button class="neu-btn" onclick="goBack()" style="width:40px; height:40px; font-size:12px;">🔙</button>
+                <h2 id="pageTitle">Home</h2>
+            </div>
+            <div id="trialBadge" class="badge neu-in">Checking...</div>
+        </div>
+
+        <!-- Pages -->
+        <div id="homePage" class="page">
+            <div id="trackList" class="track-list">
+                <!-- Tracks render here dynamically -->
+            </div>
+        </div>
+
+        <div id="explorePage" class="page hidden">
+            <input type="text" id="searchInput" class="neu-in" placeholder="Search any track..." style="width:100%; padding:15px; border:none; outline:none; border-radius:20px; color:var(--text-active); margin-bottom:20px;" oninput="searchTracks(this.value)">
+            <div id="searchResults" class="track-list"></div>
+        </div>
+
+        <div id="playlistsPage" class="page hidden">
+            <h3 style="color:var(--text-active);">Your Custom Playlists</h3>
+            <p style="margin-top:10px; font-size:13px;">Available in next update.</p>
+        </div>
+
+        <div id="settingsPage" class="page hidden">
+            <div class="settings-card neu-out">
+                <div>
+                    <h3 style="color:var(--text-active);">Light/Dark Theme</h3>
+                    <p style="font-size:12px; margin-top:5px;">Switch neumorphic UI mode</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+                    <span class="toggle-slider neu-in"></span>
+                </label>
+            </div>
+        </div>
+
+        <div id="policyPage" class="page hidden">
+            <div class="policy-content neu-out">
+                <h3 style="color:var(--accent); margin-bottom:10px;">Terms & Conditions</h3>
             <h1 style="color:var(--orange); text-shadow:var(--shadow-glow); margin-bottom:10px;">🎵 MusicStream</h1>
             <p style="color:var(--text2); margin-bottom:25px; font-size:14px;">God-Level Dark Neumorphic Audio System</p>
             <button class="neu-btn neu-btn-accent btn" onclick="googleSignIn()" style="width:100%;">🔐 Sign In with Google</button>
