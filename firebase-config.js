@@ -18,7 +18,7 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 const PAYMENT_LINKS = {
-    monthly: "https://rzp.io/rzp/podmen2",
+    monthly: "https://rzp.io/rzp/FLp2RSf",
     yearly: "https://rzp.io/rzp/podman"
 };
 
