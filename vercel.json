@@ -3,12 +3,12 @@
   "name": "musicstream",
   "builds": [
     {
-      "src": "**/*.html",
-      "use": "@vercel/static"
-    },
-    {
       "src": "api/webhook.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
