@@ -21,16 +21,11 @@
             --text-secondary: #a0a0b0;
             --text-muted: #606070;
             --accent: #FF5500;
-            --accent-dark: #cc4400;
             --accent-glow: rgba(255, 85, 0, 0.4);
             --cyan: #00E5FF;
-            --cyan-glow: rgba(0, 229, 255, 0.4);
             --success: #10B981;
-            --success-glow: rgba(16, 185, 129, 0.4);
             --error: #EF4444;
-            --error-glow: rgba(239, 68, 68, 0.4);
             --warning: #F59E0B;
-            --warning-glow: rgba(245, 158, 11, 0.4);
             --shadow-dark: #17181b;
             --shadow-light: #2d2e33;
             --neumorphic: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
@@ -42,936 +37,222 @@
             --radius-circle: 50%;
             --transition: 0.3s ease;
         }
-        
         body.light-mode {
-            --bg: #e8e8e8;
-            --surface: #f0f0f0;
-            --surface-light: #f5f5f5;
-            --surface-dark: #d8d8d8;
-            --text: #222327;
-            --text-secondary: #555560;
-            --text-muted: #888890;
-            --shadow-dark: #bebebe;
-            --shadow-light: #ffffff;
+            --bg: #e8e8e8; --surface: #f0f0f0; --surface-light: #f5f5f5; --surface-dark: #d8d8d8;
+            --text: #222327; --text-secondary: #555560; --text-muted: #888890;
+            --shadow-dark: #bebebe; --shadow-light: #ffffff;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+        .hidden { display: none !important; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--surface-light); border-radius: 3px; }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        #loadingScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; }
+        .loader { width: 60px; height: 60px; border: 4px solid var(--surface); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-text { color: var(--text-secondary); font-size: 14px; font-weight: 600; }
         
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
+        #accessDenied { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99998; text-align: center; padding: 20px; }
+        .denied-icon { font-size: 80px; margin-bottom: 20px; }
+        .denied-title { font-size: 28px; font-weight: 900; margin-bottom: 10px; color: var(--error); }
+        .denied-text { color: var(--text-secondary); margin-bottom: 25px; }
         
-        .hidden {
-            display: none !important;
-        }
+        .btn { padding: 12px 22px; border: none; border-radius: var(--radius); font-size: 13px; font-weight: 600; cursor: pointer; transition: all var(--transition); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; background: var(--bg); box-shadow: var(--neumorphic-small); color: var(--text); font-family: 'Inter', sans-serif; }
+        .btn:hover { box-shadow: var(--neumorphic-small-inset); }
+        .btn-accent { background: var(--accent); color: #fff; box-shadow: 0 0 20px var(--accent-glow), var(--neumorphic-small); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-danger { background: var(--error); color: #fff; }
+        .btn-warning { background: var(--warning); color: #222327; }
+        .btn-small { padding: 7px 14px; font-size: 11px; border-radius: var(--radius-small); }
+        .btn-full { width: 100%; justify-content: center; }
         
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--surface-light);
-            border-radius: 3px;
-        }
+        .input-field { width: 100%; padding: 14px 18px; border: none; border-radius: var(--radius); background: var(--bg); box-shadow: var(--neumorphic-inset); color: var(--text); font-size: 13px; font-family: 'Inter', sans-serif; outline: none; }
+        .input-field:focus { box-shadow: var(--neumorphic-inset), 0 0 15px var(--accent-glow); }
+        select.input-field { appearance: none; cursor: pointer; }
         
-        /* ============ LOADING SCREEN ============ */
-        #loadingScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: var(--bg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-        }
-        .loader {
-            width: 60px;
-            height: 60px;
-            border: 4px solid var(--surface);
-            border-top-color: var(--accent);
-            border-radius: var(--radius-circle);
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .loader-text {
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 600;
-        }
+        #adminApp { display: flex; min-height: 100vh; }
+        #sidebar { width: 240px; background: var(--bg); padding: 25px 15px; display: flex; flex-direction: column; gap: 4px; position: fixed; top: 0; left: 0; bottom: 0; z-index: 500; box-shadow: 4px 0 20px rgba(0,0,0,0.2); transition: transform var(--transition); }
+        .sidebar-logo { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 900; padding: 10px 15px; margin-bottom: 20px; }
+        .sidebar-logo span { background: linear-gradient(135deg, var(--accent), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .admin-badge { background: rgba(255,85,0,0.15); color: var(--accent); padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 700; text-transform: uppercase; margin-left: 5px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border: none; border-radius: var(--radius); background: transparent; color: var(--text-secondary); font-size: 13px; font-weight: 500; cursor: pointer; transition: all var(--transition); text-align: left; width: 100%; font-family: 'Inter', sans-serif; margin-bottom: 3px; }
+        .nav-item:hover { background: var(--surface); color: var(--text); }
+        .nav-item.active { background: var(--bg); box-shadow: var(--neumorphic-inset); color: var(--accent); font-weight: 700; }
+        .nav-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+        .sidebar-spacer { flex: 1; }
         
-        /* ============ ACCESS DENIED ============ */
-        #accessDenied {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: var(--bg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 99998;
-            text-align: center;
-            padding: 20px;
-        }
-        .denied-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-        .denied-title {
-            font-size: 28px;
-            font-weight: 900;
-            margin-bottom: 10px;
-            color: var(--error);
-        }
-        .denied-text {
-            color: var(--text-secondary);
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
+        #mainContent { flex: 1; margin-left: 240px; padding: 20px 25px; transition: margin-left var(--transition); }
+        #header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; margin-bottom: 25px; background: var(--bg); box-shadow: var(--neumorphic); border-radius: var(--radius); position: sticky; top: 0; z-index: 100; }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .menu-btn { display: none; background: var(--bg); box-shadow: var(--neumorphic-small); border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; color: var(--text); font-size: 20px; }
+        .page-title { font-size: 18px; font-weight: 700; }
+        .header-right { display: flex; align-items: center; gap: 10px; }
+        .admin-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: var(--neumorphic-small); cursor: pointer; }
         
-        /* ============ BUTTONS ============ */
-        .btn {
-            padding: 12px 22px;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-            background: var(--bg);
-            box-shadow: var(--neumorphic-small);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-        }
-        .btn:hover {
-            box-shadow: var(--neumorphic-small-inset);
-            transform: translateY(-1px);
-        }
-        .btn:active {
-            transform: translateY(0);
-        }
-        .btn-accent {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 0 20px var(--accent-glow), var(--neumorphic-small);
-        }
-        .btn-success {
-            background: var(--success);
-            color: #fff;
-            box-shadow: 0 0 20px var(--success-glow), var(--neumorphic-small);
-        }
-        .btn-danger {
-            background: var(--error);
-            color: #fff;
-            box-shadow: 0 0 20px var(--error-glow), var(--neumorphic-small);
-        }
-        .btn-warning {
-            background: var(--warning);
-            color: #222327;
-            box-shadow: 0 0 20px var(--warning-glow), var(--neumorphic-small);
-        }
-        .btn-small {
-            padding: 7px 14px;
-            font-size: 11px;
-            border-radius: var(--radius-small);
-        }
-        .btn-full {
-            width: 100%;
-            justify-content: center;
-        }
-        
-        /* ============ INPUTS ============ */
-        .input-field {
-            width: 100%;
-            padding: 14px 18px;
-            border: none;
-            border-radius: var(--radius);
-            background: var(--bg);
-            box-shadow: var(--neumorphic-inset);
-            color: var(--text);
-            font-size: 13px;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: all var(--transition);
-        }
-        .input-field:focus {
-            box-shadow: var(--neumorphic-inset), 0 0 15px var(--accent-glow);
-        }
-        .input-field::placeholder {
-            color: var(--text-muted);
-        }
-        select.input-field {
-            appearance: none;
-            cursor: pointer;
-        }
-        
-        /* ============ ADMIN LAYOUT ============ */
-        #adminApp {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* ============ SIDEBAR ============ */
-        #sidebar {
-            width: 240px;
-            background: var(--bg);
-            padding: 25px 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            z-index: 500;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
-            transition: transform var(--transition);
-        }
-        .sidebar-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 18px;
-            font-weight: 900;
-            padding: 10px 15px;
-            margin-bottom: 20px;
-        }
-        .sidebar-logo span {
-            background: linear-gradient(135deg, var(--accent), var(--cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .admin-badge {
-            display: inline-block;
-            background: rgba(255, 85, 0, 0.15);
-            color: var(--accent);
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 9px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-left: 5px;
-        }
-        
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 13px 16px;
-            border: none;
-            border-radius: var(--radius);
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all var(--transition);
-            text-align: left;
-            width: 100%;
-            font-family: 'Inter', sans-serif;
-            margin-bottom: 3px;
-        }
-        .nav-item:hover {
-            background: var(--surface);
-            box-shadow: var(--neumorphic-small);
-            color: var(--text);
-        }
-        .nav-item.active {
-            background: var(--bg);
-            box-shadow: var(--neumorphic-inset);
-            color: var(--accent);
-            font-weight: 700;
-        }
-        .nav-icon {
-            font-size: 16px;
-            width: 22px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-        .sidebar-spacer {
-            flex: 1;
-        }
-        
-        /* ============ MAIN CONTENT ============ */
-        #mainContent {
-            flex: 1;
-            margin-left: 240px;
-            padding: 20px 25px;
-            transition: margin-left var(--transition);
-        }
-        
-        /* ============ HEADER ============ */
-        #header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            background: var(--bg);
-            box-shadow: var(--neumorphic);
-            border-radius: var(--radius);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .menu-btn {
-            display: none;
-            background: var(--bg);
-            box-shadow: var(--neumorphic-small);
-            border: none;
-            border-radius: var(--radius-circle);
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            color: var(--text);
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-        .page-title {
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .admin-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius-circle);
-            object-fit: cover;
-            box-shadow: var(--neumorphic-small);
-            cursor: pointer;
-        }
-        
-        /* ============ PAGE CONTENT ============ */
-        .page {
-            display: none;
-        }
-        .page.active {
-            display: block;
-        }
-        
-        /* ============ STATS CARDS ============ */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 18px;
-            margin-bottom: 25px;
-        }
-        .stat-card {
-            background: var(--bg);
-            box-shadow: var(--neumorphic);
-            border-radius: var(--radius);
-            padding: 25px 20px;
-            text-align: center;
-            transition: all var(--transition);
-        }
-        .stat-card:hover {
-            transform: translateY(-3px);
-        }
-        .stat-icon {
-            font-size: 30px;
-            margin-bottom: 10px;
-        }
-        .stat-value {
-            font-size: 28px;
-            font-weight: 900;
-            margin-bottom: 5px;
-        }
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .page { display: none; }
+        .page.active { display: block; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 25px; }
+        .stat-card { background: var(--bg); box-shadow: var(--neumorphic); border-radius: var(--radius); padding: 25px 20px; text-align: center; }
+        .stat-icon { font-size: 30px; margin-bottom: 10px; }
+        .stat-value { font-size: 28px; font-weight: 900; margin-bottom: 5px; }
+        .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
         .stat-card.accent .stat-value { color: var(--accent); }
         .stat-card.cyan .stat-value { color: var(--cyan); }
         .stat-card.success .stat-value { color: var(--success); }
         .stat-card.warning .stat-value { color: var(--warning); }
         
-        /* ============ CARDS ============ */
-        .card {
-            background: var(--bg);
-            box-shadow: var(--neumorphic);
-            border-radius: var(--radius);
-            padding: 25px;
-            margin-bottom: 20px;
-        }
-        .card-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .card { background: var(--bg); box-shadow: var(--neumorphic); border-radius: var(--radius); padding: 25px; margin-bottom: 20px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+        .form-group.full-width { grid-column: 1 / -1; }
         
-        /* ============ FORM GRID ============ */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .form-group label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
+        .list-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; border-bottom: 1px solid var(--surface); gap: 15px; flex-wrap: wrap; }
+        .list-item:last-child { border-bottom: none; }
+        .list-item-info { flex: 1; min-width: 150px; }
+        .list-item-info h4 { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+        .list-item-info p { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; }
+        .list-item-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .status-active { background: rgba(16,185,129,0.15); color: var(--success); }
+        .status-inactive { background: rgba(239,68,68,0.15); color: var(--error); }
+        .status-premium { background: rgba(255,85,0,0.15); color: var(--accent); }
+        .status-free { background: rgba(160,160,176,0.15); color: var(--text-secondary); }
+        .status-blocked { background: rgba(239,68,68,0.2); color: var(--error); }
         
-        /* ============ LIST ITEMS ============ */
-        .list-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            border-bottom: 1px solid var(--surface);
-            gap: 15px;
-            transition: all var(--transition);
-            flex-wrap: wrap;
-        }
-        .list-item:last-child {
-            border-bottom: none;
-        }
-        .list-item:hover {
-            background: var(--surface);
-            border-radius: var(--radius-small);
-        }
-        .list-item-info {
-            flex: 1;
-            min-width: 150px;
-        }
-        .list-item-info h4 {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 3px;
-        }
-        .list-item-info p {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-        }
-        .list-item-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .status-active {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-        }
-        .status-inactive {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--error);
-        }
-        .status-premium {
-            background: rgba(255, 85, 0, 0.15);
-            color: var(--accent);
-        }
-        .status-free {
-            background: rgba(160, 160, 176, 0.15);
-            color: var(--text-secondary);
-        }
+        .track-thumb { width: 50px; height: 50px; border-radius: var(--radius-small); object-fit: cover; box-shadow: var(--neumorphic-small); flex-shrink: 0; }
+        .list-item-info.with-thumb { display: flex; align-items: center; gap: 12px; }
+        .search-bar { margin-bottom: 20px; }
+        .search-bar input { width: 100%; padding: 14px 20px; border: none; border-radius: var(--radius); background: var(--bg); box-shadow: var(--neumorphic-inset); color: var(--text); font-size: 13px; font-family: 'Inter', sans-serif; outline: none; }
         
-        /* ============ TRACK THUMBNAIL ============ */
-        .track-thumb {
-            width: 50px;
-            height: 50px;
-            border-radius: var(--radius-small);
-            object-fit: cover;
-            box-shadow: var(--neumorphic-small);
-            flex-shrink: 0;
-        }
-        .list-item-info.with-thumb {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .toggle-switch { position: relative; width: 45px; height: 25px; cursor: pointer; flex-shrink: 0; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--surface); box-shadow: var(--neumorphic-small-inset); border-radius: 25px; transition: all var(--transition); }
+        .toggle-slider::before { content: ''; position: absolute; top: 3px; left: 3px; width: 19px; height: 19px; background: var(--bg); border-radius: 50%; transition: all var(--transition); }
+        .toggle-switch input:checked + .toggle-slider { background: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); background: #fff; }
         
-        /* ============ SEARCH ============ */
-        .search-bar {
-            margin-bottom: 20px;
-        }
-        .search-bar input {
-            width: 100%;
-            padding: 14px 20px;
-            border: none;
-            border-radius: var(--radius);
-            background: var(--bg);
-            box-shadow: var(--neumorphic-inset);
-            color: var(--text);
-            font-size: 13px;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 99999; padding: 20px; }
+        .modal-box { background: var(--bg); box-shadow: var(--neumorphic); border-radius: 20px; padding: 30px 25px; max-width: 450px; width: 100%; max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .modal-header h3 { font-size: 18px; font-weight: 800; }
+        .modal-close { background: var(--bg); box-shadow: var(--neumorphic-small); border: none; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); font-size: 16px; }
+        .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+        .empty-state .icon { font-size: 50px; margin-bottom: 15px; }
         
-        /* ============ TOGGLE SWITCH ============ */
-        .toggle-switch {
-            position: relative;
-            width: 45px;
-            height: 25px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .toggle-slider {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--surface);
-            box-shadow: var(--neumorphic-small-inset);
-            border-radius: 25px;
-            transition: all var(--transition);
-        }
-        .toggle-slider::before {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 19px;
-            height: 19px;
-            background: var(--bg);
-            box-shadow: var(--neumorphic-small);
-            border-radius: var(--radius-circle);
-            transition: all var(--transition);
-        }
-        .toggle-switch input:checked + .toggle-slider {
-            background: var(--accent);
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-        .toggle-switch input:checked + .toggle-slider::before {
-            transform: translateX(20px);
-            background: #fff;
-        }
-        
-        /* ============ MODAL ============ */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            padding: 20px;
-        }
-        .modal-box {
-            background: var(--bg);
-            box-shadow: var(--neumorphic);
-            border-radius: 20px;
-            padding: 30px 25px;
-            max-width: 450px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .modal-header h3 {
-            font-size: 18px;
-            font-weight: 800;
-        }
-        .modal-close {
-            background: var(--bg);
-            box-shadow: var(--neumorphic-small);
-            border: none;
-            border-radius: var(--radius-circle);
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--text);
-            font-size: 16px;
-        }
-        
-        /* ============ EMPTY STATE ============ */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
-        }
-        .empty-state .icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-        }
-        .empty-state p {
-            font-size: 14px;
-        }
-        
-        /* ============ RESPONSIVE ============ */
         @media (max-width: 1024px) {
-            #sidebar {
-                width: 200px;
-                padding: 20px 10px;
-            }
-            #mainContent {
-                margin-left: 200px;
-                padding: 15px;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
+            #sidebar { width: 200px; padding: 20px 10px; }
+            #mainContent { margin-left: 200px; padding: 15px; }
+            .form-grid { grid-template-columns: 1fr; }
         }
-        
         @media (max-width: 768px) {
-            #sidebar {
-                transform: translateX(-100%);
-                width: 260px;
-                padding: 20px 15px;
-                z-index: 600;
-            }
-            #sidebar.open {
-                transform: translateX(0);
-            }
-            #mainContent {
-                margin-left: 0;
-                padding: 12px;
-            }
-            .menu-btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            .stat-card {
-                padding: 18px 15px;
-            }
-            .stat-value {
-                font-size: 22px;
-            }
-            .card {
-                padding: 18px;
-            }
-            .list-item {
-                padding: 12px;
-            }
+            #sidebar { transform: translateX(-100%); width: 260px; z-index: 600; }
+            #sidebar.open { transform: translateX(0); }
+            #mainContent { margin-left: 0; padding: 12px; }
+            .menu-btn { display: flex; align-items: center; justify-content: center; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .stat-card { padding: 18px 15px; }
+            .stat-value { font-size: 22px; }
+            .card { padding: 18px; }
+            .list-item { padding: 12px; }
         }
-        
         @media (max-width: 480px) {
-            #mainContent {
-                padding: 8px;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-            .stat-card {
-                padding: 15px 10px;
-            }
-            .stat-value {
-                font-size: 18px;
-            }
-            .stat-label {
-                font-size: 10px;
-            }
-            .btn {
-                padding: 10px 16px;
-                font-size: 11px;
-            }
-            .list-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            .list-item-actions {
-                width: 100%;
-                justify-content: flex-start;
-            }
+            #mainContent { padding: 8px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stat-card { padding: 15px 10px; }
+            .stat-value { font-size: 18px; }
+            .btn { padding: 10px 16px; font-size: 11px; }
+            .list-item { flex-direction: column; align-items: flex-start; gap: 10px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============ LOADING SCREEN ============ -->
-    <div id="loadingScreen">
-        <div class="loader"></div>
-        <p class="loader-text">Verifying Admin Access...</p>
-    </div>
+    <div id="loadingScreen"><div class="loader"></div><p class="loader-text">Verifying Admin Access...</p></div>
 
-    <!-- ============ ACCESS DENIED ============ -->
     <div id="accessDenied" class="hidden">
         <div class="denied-icon">🚫</div>
         <h2 class="denied-title">Access Denied</h2>
-        <p class="denied-text">You do not have admin privileges to access this panel.</p>
+        <p class="denied-text">You do not have admin privileges.</p>
         <button class="btn btn-accent" onclick="goToUserPanel()">Go to User Panel</button>
         <button class="btn" onclick="logout()" style="margin-top:10px;">Logout</button>
     </div>
 
-    <!-- ============ ADMIN APP ============ -->
     <div id="adminApp" class="hidden">
-        
-        <!-- Sidebar -->
         <div id="sidebar">
             <div class="sidebar-logo">🛡️ <span>Admin</span><span class="admin-badge">Panel</span></div>
-            
-            <button class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard', this)">
-                <span class="nav-icon">📊</span> Dashboard
-            </button>
-            <button class="nav-item" data-page="tracks" onclick="switchPage('tracks', this)">
-                <span class="nav-icon">🎵</span> Manage Tracks
-            </button>
-            <button class="nav-item" data-page="users" onclick="switchPage('users', this)">
-                <span class="nav-icon">👥</span> Manage Users
-            </button>
-            <button class="nav-item" data-page="transactions" onclick="switchPage('transactions', this)">
-                <span class="nav-icon">💰</span> Transactions
-            </button>
-            <button class="nav-item" data-page="settings" onclick="switchPage('settings', this)">
-                <span class="nav-icon">⚙️</span> Settings
-            </button>
-            
+            <button class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard',this)"><span class="nav-icon">📊</span> Dashboard</button>
+            <button class="nav-item" data-page="tracks" onclick="switchPage('tracks',this)"><span class="nav-icon">🎵</span> Manage Tracks</button>
+            <button class="nav-item" data-page="users" onclick="switchPage('users',this)"><span class="nav-icon">👥</span> Manage Users</button>
+            <button class="nav-item" data-page="transactions" onclick="switchPage('transactions',this)"><span class="nav-icon">💰</span> Transactions</button>
             <div class="sidebar-spacer"></div>
-            
-            <button class="nav-item" onclick="goToUserPanel()">
-                <span class="nav-icon">🎧</span> User Panel
-            </button>
-            <button class="nav-item" onclick="logout()" style="color:var(--error);">
-                <span class="nav-icon">🚪</span> Logout
-            </button>
+            <button class="nav-item" onclick="goToUserPanel()"><span class="nav-icon">🎧</span> User Panel</button>
+            <button class="nav-item" onclick="logout()" style="color:var(--error);"><span class="nav-icon">🚪</span> Logout</button>
         </div>
-        
-        <!-- Sidebar Overlay -->
         <div id="sidebarOverlay" class="hidden" onclick="closeSidebar()" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:550;"></div>
 
-        <!-- Main Content -->
         <div id="mainContent">
-            
-            <!-- Header -->
             <div id="header">
-                <div class="header-left">
-                    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-                    <span class="page-title" id="pageTitle">Dashboard</span>
-                </div>
-                <div class="header-right">
-                    <button class="btn btn-small" onclick="toggleDarkMode()" id="darkModeBtn">🌙</button>
-                    <img id="adminAvatar" class="admin-avatar" src="" alt="Admin" onclick="logout()">
-                </div>
+                <div class="header-left"><button class="menu-btn" onclick="toggleSidebar()">☰</button><span class="page-title" id="pageTitle">Dashboard</span></div>
+                <div class="header-right"><button class="btn btn-small" onclick="toggleDarkMode()">🌙</button><img id="adminAvatar" class="admin-avatar" src="" onclick="logout()"></div>
             </div>
 
-            <!-- DASHBOARD PAGE -->
+            <!-- DASHBOARD -->
             <div id="dashboardPage" class="page active">
                 <div class="stats-grid">
-                    <div class="stat-card accent">
-                        <div class="stat-icon">👥</div>
-                        <div class="stat-value" id="statUsers">0</div>
-                        <div class="stat-label">Total Users</div>
-                    </div>
-                    <div class="stat-card cyan">
-                        <div class="stat-icon">🎵</div>
-                        <div class="stat-value" id="statTracks">0</div>
-                        <div class="stat-label">Total Tracks</div>
-                    </div>
-                    <div class="stat-card success">
-                        <div class="stat-icon">👑</div>
-                        <div class="stat-value" id="statPremiumUsers">0</div>
-                        <div class="stat-label">Premium Users</div>
-                    </div>
-                    <div class="stat-card warning">
-                        <div class="stat-icon">💵</div>
-                        <div class="stat-value" id="statRevenue">₹0</div>
-                        <div class="stat-label">Total Revenue</div>
-                    </div>
+                    <div class="stat-card accent"><div class="stat-icon">👥</div><div class="stat-value" id="statUsers">0</div><div class="stat-label">Total Users</div></div>
+                    <div class="stat-card cyan"><div class="stat-icon">🎵</div><div class="stat-value" id="statTracks">0</div><div class="stat-label">Total Tracks</div></div>
+                    <div class="stat-card success"><div class="stat-icon">👑</div><div class="stat-value" id="statPremiumUsers">0</div><div class="stat-label">Premium Users</div></div>
+                    <div class="stat-card warning"><div class="stat-icon">💵</div><div class="stat-value" id="statRevenue">₹0</div><div class="stat-label">Revenue</div></div>
                 </div>
-                
                 <div class="card">
-                    <div class="card-title">📈 Quick Overview</div>
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <h4>Active Trials</h4>
-                            <p>Users currently on free trial</p>
-                        </div>
-                        <span class="status-badge status-premium" id="statActiveTrials">0</span>
-                    </div>
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <h4>Active Tracks</h4>
-                            <p>Currently visible tracks</p>
-                        </div>
-                        <span class="status-badge status-active" id="statActiveTracks">0</span>
-                    </div>
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <h4>Hidden Tracks</h4>
-                            <p>Currently hidden tracks</p>
-                        </div>
-                        <span class="status-badge status-inactive" id="statHiddenTracks">0</span>
-                    </div>
+                    <div class="card-title">📈 Overview</div>
+                    <div class="list-item"><div class="list-item-info"><h4>Active Trials</h4></div><span class="status-badge status-premium" id="statActiveTrials">0</span></div>
+                    <div class="list-item"><div class="list-item-info"><h4>Active Tracks</h4></div><span class="status-badge status-active" id="statActiveTracks">0</span></div>
+                    <div class="list-item"><div class="list-item-info"><h4>Blocked Users</h4></div><span class="status-badge status-inactive" id="statBlockedUsers">0</span></div>
                 </div>
             </div>
 
-            <!-- TRACKS PAGE -->
+            <!-- TRACKS -->
             <div id="tracksPage" class="page">
                 <div class="card">
                     <div class="card-title">➕ Add New Track</div>
                     <div class="form-grid">
-                        <div class="form-group">
-                            <label>Song Title *</label>
-                            <input type="text" id="trackTitle" class="input-field" placeholder="Enter song title">
-                        </div>
-                        <div class="form-group">
-                            <label>Artist Name *</label>
-                            <input type="text" id="trackArtist" class="input-field" placeholder="Enter artist name">
-                        </div>
-                        <div class="form-group full-width">
-                            <label>Cover Image URL *</label>
-                            <input type="url" id="trackCover" class="input-field" placeholder="https://example.com/cover.jpg">
-                        </div>
-                        <div class="form-group full-width">
-                            <label>Archive.org Audio URL *</label>
-                            <input type="url" id="trackAudio" class="input-field" placeholder="https://archive.org/download/...">
-                        </div>
-                        <div class="form-group">
-                            <label>Genre</label>
-                            <input type="text" id="trackGenre" class="input-field" placeholder="Pop, Rock, Lo-Fi...">
-                        </div>
-                        <div class="form-group">
-                            <label>Language</label>
-                            <input type="text" id="trackLanguage" class="input-field" placeholder="English, Hindi...">
-                        </div>
+                        <div class="form-group"><label>Song Title *</label><input type="text" id="trackTitle" class="input-field" placeholder="Enter song title"></div>
+                        <div class="form-group"><label>Artist Name *</label><input type="text" id="trackArtist" class="input-field" placeholder="Enter artist name"></div>
+                        <div class="form-group full-width"><label>Cover Image URL *</label><input type="url" id="trackCover" class="input-field" placeholder="https://example.com/cover.jpg"></div>
+                        <div class="form-group full-width"><label>Archive.org Audio URL *</label><input type="url" id="trackAudio" class="input-field" placeholder="https://archive.org/download/..."></div>
+                        <div class="form-group"><label>Category *</label><input type="text" id="trackCategory" class="input-field" placeholder="Music, Podcast, Bhajan..."></div>
+                        <div class="form-group"><label>Genre</label><input type="text" id="trackGenre" class="input-field" placeholder="Pop, Rock..."></div>
+                        <div class="form-group"><label>Language</label><input type="text" id="trackLanguage" class="input-field" placeholder="English, Hindi..."></div>
+                        <div class="form-group"><label>Type</label><select id="trackType" class="input-field"><option value="music">Music</option><option value="podcast">Podcast</option></select></div>
                     </div>
                     <button class="btn btn-accent btn-full" onclick="addTrack()">➕ Add Track</button>
                 </div>
-                
                 <div class="card">
                     <div class="card-title">📋 All Tracks</div>
-                    <div class="search-bar">
-                        <input type="text" id="trackSearch" placeholder="Search tracks..." oninput="filterTracks(this.value)">
-                    </div>
+                    <div class="search-bar"><input type="text" id="trackSearch" placeholder="Search tracks..." oninput="filterTracks(this.value)"></div>
                     <div id="tracksList"></div>
                 </div>
             </div>
 
-            <!-- USERS PAGE -->
+            <!-- USERS -->
             <div id="usersPage" class="page">
                 <div class="card">
                     <div class="card-title">👥 User Management</div>
-                    <div class="search-bar">
-                        <input type="text" id="userSearch" placeholder="Search users by name or email..." oninput="filterUsers(this.value)">
-                    </div>
+                    <div class="search-bar"><input type="text" id="userSearch" placeholder="Search users..." oninput="filterUsers(this.value)"></div>
                     <div id="usersList"></div>
                 </div>
             </div>
 
-            <!-- TRANSACTIONS PAGE -->
+            <!-- TRANSACTIONS -->
             <div id="transactionsPage" class="page">
                 <div class="card">
                     <div class="card-title">💰 Payment Transactions</div>
                     <div id="transactionsList"></div>
-                </div>
-            </div>
-
-            <!-- SETTINGS PAGE -->
-            <div id="settingsPage" class="page">
-                <div class="card">
-                    <div class="card-title">⚙️ Admin Settings</div>
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <h4>Dark Mode</h4>
-                            <p>Toggle light/dark theme</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="darkModeToggle" checked onchange="toggleDarkMode(this.checked)">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <h4>Notifications</h4>
-                            <p>Receive admin alerts</p>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-title">ℹ️ About</div>
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <h4>App Version</h4>
-                            <p>Current version</p>
-                        </div>
-                        <span class="status-badge status-active">1.0.0</span>
-                    </div>
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <h4>Firebase Project</h4>
-                            <p>Connected project</p>
-                        </div>
-                        <span class="status-badge status-premium">Active</span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -980,29 +261,10 @@
     <!-- GRANT PREMIUM MODAL -->
     <div id="grantPremiumModal" class="modal-overlay hidden">
         <div class="modal-box">
-            <div class="modal-header">
-                <h3>👑 Grant Premium</h3>
-                <button class="modal-close" onclick="closeGrantPremiumModal()">✕</button>
-            </div>
+            <div class="modal-header"><h3>👑 Grant Premium</h3><button class="modal-close" onclick="closeGrantPremiumModal()">✕</button></div>
             <div id="grantPremiumUserInfo" style="margin-bottom:20px;"></div>
-            <div class="form-group" style="margin-bottom:15px;">
-                <label>Duration (Months)</label>
-                <select id="premiumMonths" class="input-field">
-                    <option value="1">1 Month</option>
-                    <option value="3">3 Months</option>
-                    <option value="6">6 Months</option>
-                    <option value="12">12 Months (1 Year)</option>
-                    <option value="24">24 Months (2 Years)</option>
-                </select>
-            </div>
-            <div class="form-group" style="margin-bottom:15px;">
-                <label>Plan Type</label>
-                <select id="premiumPlan" class="input-field">
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
-                    <option value="lifetime">Lifetime</option>
-                </select>
-            </div>
+            <div class="form-group" style="margin-bottom:15px;"><label>Duration (Months)</label><select id="premiumMonths" class="input-field"><option value="1">1 Month</option><option value="3">3 Months</option><option value="6">6 Months</option><option value="12">12 Months</option><option value="24">24 Months</option></select></div>
+            <div class="form-group" style="margin-bottom:15px;"><label>Plan Type</label><select id="premiumPlan" class="input-field"><option value="monthly">Monthly</option><option value="yearly">Yearly</option><option value="lifetime">Lifetime</option></select></div>
             <button class="btn btn-success btn-full" onclick="confirmGrantPremium()">✅ Grant Premium</button>
         </div>
     </div>
@@ -1010,74 +272,41 @@
     <!-- EDIT TRACK MODAL -->
     <div id="editTrackModal" class="modal-overlay hidden">
         <div class="modal-box">
-            <div class="modal-header">
-                <h3>✏️ Edit Track</h3>
-                <button class="modal-close" onclick="closeEditTrackModal()">✕</button>
-            </div>
+            <div class="modal-header"><h3>✏️ Edit Track</h3><button class="modal-close" onclick="closeEditTrackModal()">✕</button></div>
             <input type="hidden" id="editTrackId">
-            <div class="form-group" style="margin-bottom:12px;">
-                <label>Song Title</label>
-                <input type="text" id="editTrackTitle" class="input-field">
-            </div>
-            <div class="form-group" style="margin-bottom:12px;">
-                <label>Artist Name</label>
-                <input type="text" id="editTrackArtist" class="input-field">
-            </div>
-            <div class="form-group" style="margin-bottom:12px;">
-                <label>Cover Image URL</label>
-                <input type="url" id="editTrackCover" class="input-field">
-            </div>
-            <div class="form-group" style="margin-bottom:12px;">
-                <label>Audio URL</label>
-                <input type="url" id="editTrackAudio" class="input-field">
-            </div>
-            <div class="form-group" style="margin-bottom:15px;">
-                <label>Genre</label>
-                <input type="text" id="editTrackGenre" class="input-field">
-            </div>
-            <button class="btn btn-accent btn-full" onclick="saveTrackEdit()">💾 Save Changes</button>
+            <div class="form-group" style="margin-bottom:12px;"><label>Title</label><input type="text" id="editTrackTitle" class="input-field"></div>
+            <div class="form-group" style="margin-bottom:12px;"><label>Artist</label><input type="text" id="editTrackArtist" class="input-field"></div>
+            <div class="form-group" style="margin-bottom:12px;"><label>Cover URL</label><input type="url" id="editTrackCover" class="input-field"></div>
+            <div class="form-group" style="margin-bottom:12px;"><label>Audio URL</label><input type="url" id="editTrackAudio" class="input-field"></div>
+            <div class="form-group" style="margin-bottom:12px;"><label>Category</label><input type="text" id="editTrackCategory" class="input-field"></div>
+            <div class="form-group" style="margin-bottom:15px;"><label>Genre</label><input type="text" id="editTrackGenre" class="input-field"></div>
+            <button class="btn btn-accent btn-full" onclick="saveTrackEdit()">💾 Save</button>
         </div>
     </div>
 
     <script src="firebase-config.js"></script>
     <script>
-        // ============================================
-        // GLOBAL STATE
-        // ============================================
         let currentAdmin = null;
-        let adminData = null;
         let allUsers = [];
         let allTracks = [];
         let allTransactions = [];
         let selectedUserId = null;
 
-        // ============================================
-        // AUTH & ADMIN CHECK
-        // ============================================
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 try {
                     const userDoc = await db.collection('users').doc(user.uid).get();
-                    
                     if (userDoc.exists && userDoc.data().role === 'admin') {
                         currentAdmin = user;
-                        adminData = userDoc.data();
                         document.getElementById('loadingScreen').classList.add('hidden');
                         document.getElementById('adminApp').classList.remove('hidden');
-                        document.getElementById('adminAvatar').src = adminData.photoURL || 'https://via.placeholder.com/40';
-                        
-                        if (adminData.darkMode === false) {
-                            document.body.classList.add('light-mode');
-                            document.getElementById('darkModeToggle').checked = false;
-                        }
-                        
+                        document.getElementById('adminAvatar').src = userDoc.data().photoURL || 'https://via.placeholder.com/40';
                         await loadAllData();
                     } else {
                         document.getElementById('loadingScreen').classList.add('hidden');
                         document.getElementById('accessDenied').classList.remove('hidden');
                     }
-                } catch (error) {
-                    console.error('Admin check error:', error);
+                } catch (e) {
                     document.getElementById('loadingScreen').classList.add('hidden');
                     document.getElementById('accessDenied').classList.remove('hidden');
                 }
@@ -1086,502 +315,216 @@
             }
         });
 
-        function logout() {
-            auth.signOut().then(() => {
-                window.location.href = 'index.html';
-            });
-        }
+        function logout() { auth.signOut().then(() => window.location.href = 'index.html'); }
+        function goToUserPanel() { window.location.href = 'index.html'; }
 
-        function goToUserPanel() {
-            window.location.href = 'index.html';
-        }
-
-        // ============================================
-        // LOAD ALL DATA
-        // ============================================
         async function loadAllData() {
-            await Promise.all([
-                loadUsers(),
-                loadTracks(),
-                loadTransactions()
-            ]);
-            updateDashboardStats();
+            await Promise.all([loadUsers(), loadTracks(), loadTransactions()]);
+            updateStats();
         }
 
         async function loadUsers() {
-            try {
-                const snapshot = await db.collection('users').get();
-                allUsers = [];
-                snapshot.forEach(doc => {
-                    allUsers.push({ id: doc.id, ...doc.data() });
-                });
-                renderUsers(allUsers);
-            } catch (error) {
-                console.error('Load users error:', error);
-            }
+            const s = await db.collection('users').get();
+            allUsers = [];
+            s.forEach(d => allUsers.push({ id: d.id, ...d.data() }));
+            renderUsers(allUsers);
         }
 
         async function loadTracks() {
-            try {
-                const snapshot = await db.collection('tracks').get();
-                allTracks = [];
-                snapshot.forEach(doc => {
-                    allTracks.push({ id: doc.id, ...doc.data() });
-                });
-                renderTracksList(allTracks);
-            } catch (error) {
-                console.error('Load tracks error:', error);
-            }
+            const s = await db.collection('tracks').get();
+            allTracks = [];
+            s.forEach(d => allTracks.push({ id: d.id, ...d.data() }));
+            renderTracksList(allTracks);
         }
 
         async function loadTransactions() {
             try {
-                const snapshot = await db.collection('payments').orderBy('createdAt', 'desc').limit(50).get();
+                const s = await db.collection('payments').orderBy('createdAt', 'desc').limit(100).get();
                 allTransactions = [];
-                snapshot.forEach(doc => {
-                    allTransactions.push({ id: doc.id, ...doc.data() });
-                });
+                s.forEach(d => allTransactions.push({ id: d.id, ...d.data() }));
                 renderTransactions(allTransactions);
-            } catch (error) {
-                console.error('Load transactions error:', error);
-                renderTransactions([]);
-            }
+            } catch(e) { renderTransactions([]); }
         }
 
-        // ============================================
-        // DASHBOARD STATS
-        // ============================================
-        function updateDashboardStats() {
+        function updateStats() {
             const totalUsers = allUsers.length;
             const totalTracks = allTracks.length;
             const premiumUsers = allUsers.filter(u => u.subscriptionActive).length;
-            const activeTrials = allUsers.filter(u => {
-                if (!u.trialEnd) return false;
-                return new Date(u.trialEnd) > new Date() && !u.subscriptionActive;
-            }).length;
+            const blockedUsers = allUsers.filter(u => u.isBlocked).length;
+            const activeTrials = allUsers.filter(u => !u.subscriptionActive && u.trialEnd && new Date(u.trialEnd) > new Date()).length;
             const activeTracks = allTracks.filter(t => t.isActive !== false).length;
-            const hiddenTracks = totalTracks - activeTracks;
-            
-            let totalRevenue = 0;
-            allTransactions.forEach(t => {
-                if (t.status === 'captured' || t.status === 'success') {
-                    totalRevenue += t.amount || 0;
-                }
-            });
-            
+            let revenue = 0;
+            allTransactions.forEach(t => { if (t.status === 'captured' || t.status === 'success') revenue += t.amount || 0; });
             document.getElementById('statUsers').textContent = totalUsers;
             document.getElementById('statTracks').textContent = totalTracks;
             document.getElementById('statPremiumUsers').textContent = premiumUsers;
-            document.getElementById('statRevenue').textContent = '₹' + (totalRevenue / 100).toLocaleString('en-IN');
+            document.getElementById('statRevenue').textContent = '₹' + (revenue / 100).toLocaleString('en-IN');
             document.getElementById('statActiveTrials').textContent = activeTrials;
             document.getElementById('statActiveTracks').textContent = activeTracks;
-            document.getElementById('statHiddenTracks').textContent = hiddenTracks;
+            document.getElementById('statBlockedUsers').textContent = blockedUsers;
         }
 
-        // ============================================
-        // RENDER TRACKS
-        // ============================================
         function renderTracksList(tracks) {
-            const container = document.getElementById('tracksList');
-            
-            if (tracks.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="icon">🎵</div><p>No tracks found</p></div>';
-                return;
-            }
-            
-            container.innerHTML = tracks.map(track => {
-                const isActive = track.isActive !== false;
-                return `
-                    <div class="list-item">
-                        <div class="list-item-info with-thumb">
-                            <img src="${track.coverUrl}" class="track-thumb" onerror="this.src='https://via.placeholder.com/50'" alt="${track.title}">
-                            <div>
-                                <h4>${track.title}</h4>
-                                <p>${track.artist} ${track.genre ? '• ' + track.genre : ''}</p>
-                                <span class="status-badge ${isActive ? 'status-active' : 'status-inactive'}">
-                                    ${isActive ? 'Visible' : 'Hidden'}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="list-item-actions">
-                            <button class="btn btn-small ${isActive ? 'btn-warning' : 'btn-success'}" onclick="toggleTrack('${track.id}', ${!isActive})">
-                                ${isActive ? '👁️ Hide' : '👁️ Show'}
-                            </button>
-                            <button class="btn btn-small btn-accent" onclick="openEditTrack('${track.id}')">
-                                ✏️ Edit
-                            </button>
-                            <button class="btn btn-small btn-danger" onclick="deleteTrack('${track.id}')">
-                                🗑️ Delete
-                            </button>
-                        </div>
+            const c = document.getElementById('tracksList');
+            if (tracks.length === 0) { c.innerHTML = '<div class="empty-state"><div class="icon">🎵</div><p>No tracks</p></div>'; return; }
+            c.innerHTML = tracks.map(t => {
+                const active = t.isActive !== false;
+                return `<div class="list-item">
+                    <div class="list-item-info with-thumb">
+                        <img src="${t.coverUrl}" class="track-thumb" onerror="this.src='https://via.placeholder.com/50'">
+                        <div><h4>${t.title}</h4><p>${t.artist} • ${t.category || t.genre || 'General'}</p><span class="status-badge ${active ? 'status-active' : 'status-inactive'}">${active ? 'Visible' : 'Hidden'}</span></div>
                     </div>
-                `;
+                    <div class="list-item-actions">
+                        <button class="btn btn-small ${active ? 'btn-warning' : 'btn-success'}" onclick="toggleTrack('${t.id}', ${!active})">${active ? 'Hide' : 'Show'}</button>
+                        <button class="btn btn-small btn-accent" onclick="openEditTrack('${t.id}')">✏️ Edit</button>
+                        <button class="btn btn-small btn-danger" onclick="deleteTrack('${t.id}')">🗑️ Delete</button>
+                    </div>
+                </div>`;
             }).join('');
         }
 
-        function filterTracks(query) {
-            if (!query.trim()) {
-                renderTracksList(allTracks);
-                return;
-            }
-            const filtered = allTracks.filter(t =>
-                t.title.toLowerCase().includes(query.toLowerCase()) ||
-                t.artist.toLowerCase().includes(query.toLowerCase()) ||
-                (t.genre && t.genre.toLowerCase().includes(query.toLowerCase()))
-            );
-            renderTracksList(filtered);
+        function filterTracks(q) {
+            if (!q.trim()) { renderTracksList(allTracks); return; }
+            renderTracksList(allTracks.filter(t => t.title.toLowerCase().includes(q.toLowerCase()) || t.artist.toLowerCase().includes(q.toLowerCase()) || (t.category && t.category.toLowerCase().includes(q.toLowerCase()))));
         }
 
-        // ============================================
-        // ADD TRACK
-        // ============================================
         async function addTrack() {
             const title = document.getElementById('trackTitle').value.trim();
             const artist = document.getElementById('trackArtist').value.trim();
             const coverUrl = document.getElementById('trackCover').value.trim();
             const audioUrl = document.getElementById('trackAudio').value.trim();
-            const genre = document.getElementById('trackGenre').value.trim();
-            const language = document.getElementById('trackLanguage').value.trim();
-            
-            if (!title || !artist || !coverUrl || !audioUrl) {
-                alert('Please fill all required fields');
-                return;
-            }
-            
-            try {
-                await db.collection('tracks').add({
-                    title,
-                    artist,
-                    coverUrl,
-                    audioUrl,
-                    genre: genre || 'General',
-                    language: language || 'Unknown',
-                    isActive: true,
-                    requiresPremium: true,
-                    createdBy: currentAdmin.uid,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    stats: {
-                        playCount: 0,
-                        favoriteCount: 0
-                    }
-                });
-                
-                alert('✅ Track added successfully!');
-                document.getElementById('trackTitle').value = '';
-                document.getElementById('trackArtist').value = '';
-                document.getElementById('trackCover').value = '';
-                document.getElementById('trackAudio').value = '';
-                document.getElementById('trackGenre').value = '';
-                document.getElementById('trackLanguage').value = '';
-                
-                await loadTracks();
-                updateDashboardStats();
-            } catch (error) {
-                alert('Error adding track: ' + error.message);
-            }
+            const category = document.getElementById('trackCategory').value.trim() || 'Music';
+            const genre = document.getElementById('trackGenre').value.trim() || 'General';
+            const language = document.getElementById('trackLanguage').value.trim() || 'Unknown';
+            const type = document.getElementById('trackType').value;
+            if (!title || !artist || !coverUrl || !audioUrl) return alert('Fill all required fields');
+            await db.collection('tracks').add({ title, artist, coverUrl, audioUrl, category, genre, language, type, isActive: true, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+            alert('✅ Track added!');
+            document.getElementById('trackTitle').value = ''; document.getElementById('trackArtist').value = ''; document.getElementById('trackCover').value = ''; document.getElementById('trackAudio').value = ''; document.getElementById('trackCategory').value = ''; document.getElementById('trackGenre').value = ''; document.getElementById('trackLanguage').value = '';
+            await loadTracks(); updateStats();
         }
 
-        // ============================================
-        // TOGGLE TRACK
-        // ============================================
-        async function toggleTrack(trackId, isActive) {
-            try {
-                await db.collection('tracks').doc(trackId).update({
-                    isActive: isActive,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                await loadTracks();
-                updateDashboardStats();
-            } catch (error) {
-                alert('Error toggling track: ' + error.message);
-            }
-        }
+        async function toggleTrack(id, active) { await db.collection('tracks').doc(id).update({ isActive: active }); await loadTracks(); updateStats(); }
+        async function deleteTrack(id) { if (!confirm('Delete?')) return; await db.collection('tracks').doc(id).delete(); await loadTracks(); updateStats(); }
 
-        // ============================================
-        // DELETE TRACK
-        // ============================================
-        async function deleteTrack(trackId) {
-            if (!confirm('Are you sure you want to delete this track? This cannot be undone.')) return;
-            
-            try {
-                await db.collection('tracks').doc(trackId).delete();
-                alert('🗑️ Track deleted');
-                await loadTracks();
-                updateDashboardStats();
-            } catch (error) {
-                alert('Error deleting track: ' + error.message);
-            }
-        }
-
-        // ============================================
-        // EDIT TRACK
-        // ============================================
-        function openEditTrack(trackId) {
-            const track = allTracks.find(t => t.id === trackId);
-            if (!track) return;
-            
-            document.getElementById('editTrackId').value = trackId;
-            document.getElementById('editTrackTitle').value = track.title || '';
-            document.getElementById('editTrackArtist').value = track.artist || '';
-            document.getElementById('editTrackCover').value = track.coverUrl || '';
-            document.getElementById('editTrackAudio').value = track.audioUrl || '';
-            document.getElementById('editTrackGenre').value = track.genre || '';
-            
+        function openEditTrack(id) {
+            const t = allTracks.find(x => x.id === id);
+            if (!t) return;
+            document.getElementById('editTrackId').value = id;
+            document.getElementById('editTrackTitle').value = t.title || '';
+            document.getElementById('editTrackArtist').value = t.artist || '';
+            document.getElementById('editTrackCover').value = t.coverUrl || '';
+            document.getElementById('editTrackAudio').value = t.audioUrl || '';
+            document.getElementById('editTrackCategory').value = t.category || '';
+            document.getElementById('editTrackGenre').value = t.genre || '';
             document.getElementById('editTrackModal').classList.remove('hidden');
         }
-
-        function closeEditTrackModal() {
-            document.getElementById('editTrackModal').classList.add('hidden');
-        }
-
+        function closeEditTrackModal() { document.getElementById('editTrackModal').classList.add('hidden'); }
         async function saveTrackEdit() {
-            const trackId = document.getElementById('editTrackId').value;
-            const title = document.getElementById('editTrackTitle').value.trim();
-            const artist = document.getElementById('editTrackArtist').value.trim();
-            const coverUrl = document.getElementById('editTrackCover').value.trim();
-            const audioUrl = document.getElementById('editTrackAudio').value.trim();
-            const genre = document.getElementById('editTrackGenre').value.trim();
-            
-            if (!title || !artist || !coverUrl || !audioUrl) {
-                alert('Please fill all fields');
-                return;
-            }
-            
-            try {
-                await db.collection('tracks').doc(trackId).update({
-                    title,
-                    artist,
-                    coverUrl,
-                    audioUrl,
-                    genre: genre || 'General',
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                alert('✅ Track updated!');
-                closeEditTrackModal();
-                await loadTracks();
-            } catch (error) {
-                alert('Error updating track: ' + error.message);
-            }
+            const id = document.getElementById('editTrackId').value;
+            await db.collection('tracks').doc(id).update({
+                title: document.getElementById('editTrackTitle').value.trim(),
+                artist: document.getElementById('editTrackArtist').value.trim(),
+                coverUrl: document.getElementById('editTrackCover').value.trim(),
+                audioUrl: document.getElementById('editTrackAudio').value.trim(),
+                category: document.getElementById('editTrackCategory').value.trim(),
+                genre: document.getElementById('editTrackGenre').value.trim()
+            });
+            alert('✅ Updated!'); closeEditTrackModal(); await loadTracks();
         }
 
-        // ============================================
-        // RENDER USERS
-        // ============================================
         function renderUsers(users) {
-            const container = document.getElementById('usersList');
-            
-            if (users.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="icon">👥</div><p>No users found</p></div>';
-                return;
-            }
-            
-            container.innerHTML = users.map(user => {
-                const isPremium = user.subscriptionActive === true;
-                const trialActive = !isPremium && user.trialEnd && new Date(user.trialEnd) > new Date();
-                
-                let statusBadge = '';
-                if (isPremium) {
-                    statusBadge = '<span class="status-badge status-premium">👑 Premium</span>';
-                } else if (trialActive) {
-                    statusBadge = '<span class="status-badge status-active">✨ Trial</span>';
-                } else {
-                    statusBadge = '<span class="status-badge status-free">Free</span>';
-                }
-                
-                return `
-                    <div class="list-item">
-                        <div class="list-item-info with-thumb">
-                            <img src="${user.photoURL || 'https://via.placeholder.com/50'}" class="track-thumb" onerror="this.src='https://via.placeholder.com/50'" alt="${user.displayName}" style="border-radius:50%;">
-                            <div>
-                                <h4>${user.displayName || 'Unknown'}</h4>
-                                <p>${user.email}</p>
-                                <p style="font-size:10px;">📱 ${user.whatsappNumber || 'N/A'} | 📧 ${user.supportEmail || 'N/A'}</p>
-                                ${statusBadge}
-                            </div>
-                        </div>
-                        <div class="list-item-actions">
-                            <button class="btn btn-small btn-success" onclick="openGrantPremium('${user.id}')">
-                                👑 Grant Premium
-                            </button>
-                            <button class="btn btn-small btn-danger" onclick="removePremium('${user.id}')">
-                                ❌ Remove Premium
-                            </button>
-                        </div>
+            const c = document.getElementById('usersList');
+            if (users.length === 0) { c.innerHTML = '<div class="empty-state"><div class="icon">👥</div><p>No users</p></div>'; return; }
+            c.innerHTML = users.map(u => {
+                const premium = u.subscriptionActive === true;
+                const blocked = u.isBlocked === true;
+                const trial = !premium && !blocked && u.trialEnd && new Date(u.trialEnd) > new Date();
+                let badge = '<span class="status-badge status-free">Free</span>';
+                if (blocked) badge = '<span class="status-badge status-blocked">🚫 Blocked</span>';
+                else if (premium) badge = '<span class="status-badge status-premium">👑 Premium</span>';
+                else if (trial) badge = '<span class="status-badge status-active">✨ Trial</span>';
+                return `<div class="list-item">
+                    <div class="list-item-info with-thumb">
+                        <img src="${u.photoURL || 'https://via.placeholder.com/50'}" class="track-thumb" style="border-radius:50%;" onerror="this.src='https://via.placeholder.com/50'">
+                        <div><h4>${u.displayName || 'Unknown'}</h4><p>${u.email}</p><p style="font-size:10px;">📱 ${u.whatsappNumber || 'N/A'} | 📧 ${u.supportEmail || 'N/A'}</p>${badge}</div>
                     </div>
-                `;
+                    <div class="list-item-actions">
+                        <button class="btn btn-small btn-success" onclick="openGrantPremium('${u.id}')">👑 Grant</button>
+                        <button class="btn btn-small btn-danger" onclick="removePremium('${u.id}')">❌ Remove</button>
+                        <button class="btn btn-small ${blocked ? 'btn-success' : 'btn-warning'}" onclick="toggleBlock('${u.id}', ${!blocked})">${blocked ? '✅ Unblock' : '🚫 Block'}</button>
+                        <button class="btn btn-small btn-danger" onclick="deleteUser('${u.id}')">🗑️ Delete</button>
+                    </div>
+                </div>`;
             }).join('');
         }
 
-        function filterUsers(query) {
-            if (!query.trim()) {
-                renderUsers(allUsers);
-                return;
-            }
-            const filtered = allUsers.filter(u =>
-                (u.displayName && u.displayName.toLowerCase().includes(query.toLowerCase())) ||
-                (u.email && u.email.toLowerCase().includes(query.toLowerCase()))
-            );
-            renderUsers(filtered);
+        function filterUsers(q) {
+            if (!q.trim()) { renderUsers(allUsers); return; }
+            renderUsers(allUsers.filter(u => (u.displayName && u.displayName.toLowerCase().includes(q.toLowerCase())) || (u.email && u.email.toLowerCase().includes(q.toLowerCase()))));
         }
 
-        // ============================================
-        // GRANT PREMIUM
-        // ============================================
-        function openGrantPremium(userId) {
-            selectedUserId = userId;
-            const user = allUsers.find(u => u.id === userId);
-            
-            if (user) {
-                document.getElementById('grantPremiumUserInfo').innerHTML = `
-                    <p><strong>User:</strong> ${user.displayName || 'Unknown'}</p>
-                    <p style="font-size:12px;color:var(--text-muted);">${user.email}</p>
-                `;
-            }
-            
+        function openGrantPremium(id) {
+            selectedUserId = id;
+            const u = allUsers.find(x => x.id === id);
+            document.getElementById('grantPremiumUserInfo').innerHTML = u ? `<p><strong>${u.displayName}</strong></p><p style="font-size:12px;color:var(--text-muted);">${u.email}</p>` : '';
             document.getElementById('grantPremiumModal').classList.remove('hidden');
         }
-
-        function closeGrantPremiumModal() {
-            document.getElementById('grantPremiumModal').classList.add('hidden');
-            selectedUserId = null;
-        }
+        function closeGrantPremiumModal() { document.getElementById('grantPremiumModal').classList.add('hidden'); selectedUserId = null; }
 
         async function confirmGrantPremium() {
             if (!selectedUserId) return;
-            
             const months = parseInt(document.getElementById('premiumMonths').value);
             const plan = document.getElementById('premiumPlan').value;
-            
-            if (plan === 'lifetime') {
-                await db.collection('users').doc(selectedUserId).update({
-                    subscriptionActive: true,
-                    subscriptionPlan: 'lifetime',
-                    subscriptionExpiry: null,
-                    trialEnd: new Date(2099, 11, 31).toISOString()
-                });
-            } else {
-                const expiry = new Date();
-                expiry.setMonth(expiry.getMonth() + months);
-                
-                await db.collection('users').doc(selectedUserId).update({
-                    subscriptionActive: true,
-                    subscriptionPlan: plan,
-                    subscriptionExpiry: expiry.toISOString(),
-                    trialEnd: expiry.toISOString()
-                });
-            }
-            
-            alert('✅ Premium granted successfully!');
-            closeGrantPremiumModal();
-            await loadUsers();
-            updateDashboardStats();
+            let expiry;
+            if (plan === 'lifetime') expiry = new Date('2099-12-31T23:59:59.999Z');
+            else { expiry = new Date(); expiry.setMonth(expiry.getMonth() + months); }
+            await db.collection('users').doc(selectedUserId).update({ subscriptionActive: true, subscriptionPlan: plan, subscriptionExpiry: expiry.toISOString(), trialEnd: expiry.toISOString(), isBlocked: false });
+            alert('✅ Granted!'); closeGrantPremiumModal(); await loadUsers(); updateStats();
         }
 
-        // ============================================
-        // REMOVE PREMIUM
-        // ============================================
-        async function removePremium(userId) {
-            if (!confirm('Remove premium access from this user? This will immediately revoke their access.')) return;
-            
-            try {
-                await db.collection('users').doc(userId).update({
-                    subscriptionActive: false,
-                    subscriptionPlan: null,
-                    subscriptionExpiry: null,
-                    trialEnd: '2024-01-01T00:00:00.000Z'
-                });
-                
-                alert('❌ Premium removed. User is now locked.');
-                await loadUsers();
-                updateDashboardStats();
-            } catch (error) {
-                alert('Error removing premium: ' + error.message);
-            }
+        async function removePremium(id) {
+            if (!confirm('Remove premium?')) return;
+            await db.collection('users').doc(id).update({ subscriptionActive: false, subscriptionPlan: null, subscriptionExpiry: null, trialEnd: '2024-01-01T00:00:00.000Z' });
+            await loadUsers(); updateStats();
         }
 
-        // ============================================
-        // TRANSACTIONS
-        // ============================================
+        async function toggleBlock(id, block) {
+            await db.collection('users').doc(id).update({ isBlocked: block });
+            await loadUsers(); updateStats();
+        }
+
+        async function deleteUser(id) {
+            if (!confirm('PERMANENTLY DELETE user?')) return;
+            await db.collection('users').doc(id).delete();
+            await db.collection('favorites').doc(id).delete();
+            await loadUsers(); updateStats();
+        }
+
         function renderTransactions(transactions) {
-            const container = document.getElementById('transactionsList');
-            
-            if (transactions.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="icon">💰</div><p>No transactions yet</p></div>';
-                return;
-            }
-            
-            container.innerHTML = transactions.map(tx => {
-                const statusClass = tx.status === 'captured' || tx.status === 'success' ? 'status-active' : 
-                                    tx.status === 'failed' ? 'status-inactive' : 'status-premium';
-                
+            const c = document.getElementById('transactionsList');
+            if (transactions.length === 0) { c.innerHTML = '<div class="empty-state"><div class="icon">💰</div><p>No transactions</p></div>'; return; }
+            c.innerHTML = transactions.map(tx => {
+                const status = tx.status === 'captured' || tx.status === 'success' ? 'status-active' : tx.status === 'failed' ? 'status-inactive' : 'status-premium';
                 const amount = tx.amount ? (tx.amount / 100).toFixed(2) : '0.00';
-                const date = tx.createdAt ? new Date(tx.createdAt.toDate()).toLocaleDateString('en-IN') : 'N/A';
-                
-                return `
-                    <div class="list-item">
-                        <div class="list-item-info">
-                            <h4>₹${amount}</h4>
-                            <p>${tx.userEmail || 'Unknown user'} • ${date}</p>
-                            <p style="font-size:10px;">Payment ID: ${tx.paymentId || tx.id}</p>
-                        </div>
-                        <span class="status-badge ${statusClass}">${tx.status || 'pending'}</span>
-                    </div>
-                `;
+                return `<div class="list-item"><div class="list-item-info"><h4>₹${amount}</h4><p>${tx.email || tx.userId || 'Unknown'}</p><p style="font-size:10px;">ID: ${tx.paymentId || tx.id}</p></div><span class="status-badge ${status}">${tx.status || 'pending'}</span></div>`;
             }).join('');
         }
 
-        // ============================================
-        // NAVIGATION
-        // ============================================
         function switchPage(page, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(page + 'Page').classList.add('active');
-            
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             if (btn) btn.classList.add('active');
-            
-            const titles = {
-                dashboard: 'Dashboard',
-                tracks: 'Manage Tracks',
-                users: 'Manage Users',
-                transactions: 'Transactions',
-                settings: 'Settings'
-            };
+            const titles = { dashboard: 'Dashboard', tracks: 'Manage Tracks', users: 'Manage Users', transactions: 'Transactions' };
             document.getElementById('pageTitle').textContent = titles[page] || 'Dashboard';
-            
             closeSidebar();
         }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('hidden'); }
+        function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.add('hidden'); }
+        function toggleDarkMode() { document.body.classList.toggle('light-mode'); }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('sidebarOverlay').classList.toggle('hidden');
-        }
-
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('sidebarOverlay').classList.add('hidden');
-        }
-
-        // ============================================
-        // DARK MODE
-        // ============================================
-        function toggleDarkMode(enabled) {
-            if (enabled === undefined) {
-                enabled = document.body.classList.contains('light-mode');
-            }
-            document.body.classList.toggle('light-mode', !enabled);
-            document.getElementById('darkModeToggle').checked = enabled;
-            
-            if (currentAdmin) {
-                db.collection('users').doc(currentAdmin.uid).update({
-                    darkMode: enabled
-                });
-            }
-        }
-
-        console.log('🛡️ MusicStream Admin Panel Loaded');
+        console.log('🛡️ Admin Panel Updated');
     </script>
 </body>
-</html>
+    </html>
