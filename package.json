@@ -1,0 +1,8 @@
+{
+  "name": "musicstream",
+  "version": "4.0.0",
+  "description": "MusicStream - Premium Music Streaming",
+  "dependencies": {
+    "firebase-admin": "^11.11.0"
+  }
+}
