@@ -14,6 +14,10 @@ service cloud.firestore {
              now < timestamp(userData.trialEnd);
     }
     
+    function isNotBlocked() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isBlocked != true;
+    }
+    
     match /users/{uid} {
       allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
       allow create: if request.auth != null && request.auth.uid == uid;
@@ -22,7 +26,7 @@ service cloud.firestore {
     }
     
     match /tracks/{trackId} {
-      allow read: if request.auth != null && hasAccess();
+      allow read: if request.auth != null && hasAccess() && isNotBlocked();
       allow write: if isAdmin();
     }
     
