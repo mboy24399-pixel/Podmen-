@@ -1,8 +1,15 @@
 {
-  "name": "musicstream",
-  "version": "4.0.0",
-  "description": "MusicStream - Premium Music Streaming",
+  "name": "podmen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Podmen - Music + Podcast Streaming Web App with Firebase Authentication, Firestore, and Razorpay payments",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "echo 'Podmen is a static frontend with Vercel serverless functions. No local server required.'"
+  },
   "dependencies": {
-    "firebase-admin": "^11.11.0"
+    "firebase-admin": "^12.0.0"
   }
 }
