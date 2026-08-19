@@ -40,12 +40,12 @@ import {
 // Firebase project configuration.
 // ==================================================
 const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAo5rUsL_duX3-G091B6d_jpNEsDXhPVCM",
+  authDomain: "podcast-fdfb4.firebaseapp.com",
+  projectId: "podcast-fdfb4",
+  storageBucket: "podcast-fdfb4.firebasestorage.app",
+  messagingSenderId: "722798022241",
+  appId: "1:722798022241:web:0470e5815d98ed0599a420"
 };
 
 // ==================================================
