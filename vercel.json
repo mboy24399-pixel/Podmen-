@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "public": true,
   "functions": {
     "api/webhook.js": {
       "runtime": "nodejs20.x"
