@@ -1,13 +1,7 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "**/*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/webhook.js",
-      "use": "@vercel/node"
-    }
-  ]
+  "name": "podmen",
+  "version": "1.0.0",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
 }
